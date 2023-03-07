@@ -1,0 +1,31 @@
+snippet boiler
+	\documentclass[12pt]{article}
+	\usepackage[utf8]{inputenc}
+
+	\usepackage[margin=1.5in]{geometry}
+	\usepackage{physics}
+	\usepackage{amssymb}
+	\usepackage{amsmath}
+
+	\begin{document}
+		Hello
+	\end{document}
+
+snippet beg env-wrapper
+	\begin{$1}
+		$2
+	\end{$1}
+	$0
+
+snippet eq equation-wrapper
+	\begin{equation}
+		$1
+	\end{equation}
+	$0
+
+snippet ff fraction
+	\frac{$1}{$2}$0
+
+snippet td thermo-derivative
+	\qty(\pdv{$1}{$2})_{$3}$0
+

@@ -1,0 +1,16 @@
+snippet sra Save $ra to stack
+	addi	\$sp \$sp -4
+	sw		\$ra 0(\$sp)
+	$1
+	lw 		\$ra 0(\$sp)
+	addi	\$sp \$sp 4
+	$0
+
+snippet stack Save var to stack
+	addi	\$sp \$sp -4
+	sw		\$$1 0(\$sp)
+	$2
+	lw 		\$$1 0(\$sp)
+	addi	\$sp \$sp 4
+	$0
+	

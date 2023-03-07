@@ -1,0 +1,3 @@
+[submodule "bat/themes"]
+	path = bat/themes
+	url = https://github.com/catppuccin/bat.git
