@@ -39,21 +39,58 @@ while true; do
 done
 
 # Install base utils
-sudo pacman -Sy base-devel sudo zsh neovim git ripgrep fd alacritty make cmake rsync  # TODO: Remove some of these in favor of putting them in ricing stuff
+sudo pacman -Syu base-devel sudo zsh neovim git ripgrep fd fzf tmux make cmake rsync npm  # TODO: Remove some of these in favor of putting them in ricing stuff
 
 # Install yay 
 git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd .. && rm -rf yay
 
-yay -Syu hyprland brave
+yay -Syu hyprland eww
 
 # Change shell to zsh
 chsh -s /usr/bin/zsh
+
+mkdir git && cd git
+
+mkdir .config
+cd .config
+
+sudo pacman -S bat zathura firefox texlive-most 
+
+
+echo "Linking configs"
+ln -s ~/git/dots/{bat,doom,zathura}
+
+echo "Pick a terminal emulator"
+echo "(1) foot"
+echo "(2) alacritty"
+echo "(3) kitty"
+
+while true; do
+    read -p '\b Selection: ' opt
+    case $opt in
+        1*)
+            sudo pacman -S foot
+            ln -s ~/git/dots/foot 
+            break 
+            ;;
+        2*)
+            sudo pacman -S alacritty 
+            ln -s ~/git/dots/alacritty 
+            break 
+            ;;
+        3*)
+            sudo pacman -S kitty 
+            ln -s ~/git/dots/kitty
+            break 
+            ;;
+        *)
+            printf "\b Please enter a valid option"
+    esac
+done
+
 # List of package
-# tex
 # eww
 # rofi
-# hyprland
-# qutebrowser
 # rust
 #
 
