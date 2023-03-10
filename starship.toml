@@ -10,13 +10,13 @@ error_symbol = "[🞈](red)"
 vicmd_symbol = "[🞈](sky)"
 
 [directory]
-format = "[]($style)[](bg:lavender fg:mantle)[$path](bg:lavender fg:mantle)[ ]($style)"
+format = "[]($style)[](bg:lavender fg:crust)[$path](bg:lavender fg:crust)[ ]($style)"
 style = "bg:none fg:lavender"
 truncation_length = 3
 truncate_to_repo=false
 
 [git_branch]
-format = "[]($style)[[  ](bg:lavender fg:crust bold)$branch](bg:lavender fg:mantle)[ ]($style)"
+format = "[]($style)[[  ](bg:lavender fg:mantle bold)$branch](bg:lavender fg:crust)[ ]($style)"
 style = "bg:none fg:lavender"
 
 [palettes.catppuccin_macchiato]
