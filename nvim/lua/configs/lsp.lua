@@ -7,7 +7,7 @@ local lspattach = function(client, bufnr)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
-	vim.keymap.set({ "n", "i" }, "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr })
+	vim.keymap.set({ "n" }, "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
@@ -44,15 +44,6 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-	border = "rounded",
-	close_events = { "BufHidden", "InsertLeave" },
-	underline = true,
-	virtual_text = false,
-	signs = true,
-	update_in_insert = true,
-})
-
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 	border = "rounded",
 })
@@ -60,7 +51,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 vim.diagnostic.config({
 	virtual_text = false,
 	signs = true,
-	update_in_insert = true,
+	update_in_insert = false,
 	underline = true,
 	severity_sort = false,
 	float = {
