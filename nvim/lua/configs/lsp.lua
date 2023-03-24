@@ -109,7 +109,12 @@ lspconfig.lua_ls.setup({
 
 local rt = require("rust-tools")
 rt.setup({
-  server = {
-    on_attach=lspattach
-  },
+	server = {
+		on_attach = lspattach,
+	},
+	tools = {
+		inlay_hints = {
+			show_parameter_hints = false,
+		},
+	},
 })
