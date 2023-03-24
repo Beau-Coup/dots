@@ -81,7 +81,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 lspconfig.tsserver.setup(default_config)
 lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
-lspconfig.rust_analyzer.setup(default_config)
 lspconfig.texlab.setup(default_config)
 
 lspconfig.lua_ls.setup({
@@ -106,4 +105,11 @@ lspconfig.lua_ls.setup({
 			},
 		},
 	},
+})
+
+local rt = require("rust-tools")
+rt.setup({
+  server = {
+    on_attach=lspattach
+  },
 })

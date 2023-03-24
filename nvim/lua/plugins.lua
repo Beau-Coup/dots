@@ -36,6 +36,9 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+    -- Rust
+    use('simrat39/rust-tools.nvim')
+
 	-- Motions
 	use({
 		"phaazon/hop.nvim",
