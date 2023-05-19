@@ -36,8 +36,11 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-    -- Rust
-    use('simrat39/rust-tools.nvim')
+	-- Rust
+	use("simrat39/rust-tools.nvim")
+
+	-- clangd
+	use("p00f/clangd_extensions.nvim")
 
 	-- Motions
 	use({

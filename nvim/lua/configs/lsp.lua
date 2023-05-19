@@ -107,8 +107,7 @@ lspconfig.lua_ls.setup({
 	},
 })
 
-local rt = require("rust-tools")
-rt.setup({
+require("rust-tools").setup({
 	server = {
 		on_attach = lspattach,
 	},
@@ -117,4 +116,8 @@ rt.setup({
 			show_parameter_hints = false,
 		},
 	},
+})
+
+require("clangd_extensions").setup({
+	server = default_config,
 })
