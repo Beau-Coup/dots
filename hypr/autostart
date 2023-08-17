@@ -1,3 +1,10 @@
 #!/bin/sh 
 
-hyprpaper &
+swww init
+swww img "$HOME/git/dots/assets/wave.png"
+
+eww daemon
+eww open bar
+eww open dock
+
+

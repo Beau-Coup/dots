@@ -9,7 +9,7 @@ local lspattach = function(client, bufnr)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
 	vim.keymap.set({ "n" }, "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
-	vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, { buffer = bufnr })
+	vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
@@ -38,7 +38,7 @@ local default_config = {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -82,6 +82,7 @@ lspconfig.tsserver.setup(default_config)
 lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
 lspconfig.texlab.setup(default_config)
+lspconfig.ocamllsp.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {

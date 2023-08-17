@@ -46,9 +46,13 @@ pcall(require("telescope").load_extension, "fzf")
 local hour = tonumber(os.date("%H"))
 if hour < 16 and hour >= 6 then
 	vim.cmd.colorscheme("catppuccin-latte")
+	vim.o.background = "light"
 else
 	vim.cmd.colorscheme("catppuccin-macchiato")
+	vim.o.background = "dark"
 end
+
+require("nvim-web-devicons").setup({})
 
 -- Configure treesitter
 require("configs.treesitter")

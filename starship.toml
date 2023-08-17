@@ -1,6 +1,6 @@
 # Use custom format:
 format="$directory$git_branch$character"
-add_newline = false
+add_newline = true
 
 palette = "catppuccin_macchiato"
 # Prompt symbols 

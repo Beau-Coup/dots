@@ -91,7 +91,7 @@ return require("packer").startup(function(use)
 	})
 
 	-- icons
-	use({ "kyazdani42/nvim-web-devicons", commit = "563f3635c2d8a7be7933b9e547f7c178ba0d4352" })
+	use({ "nvim-tree/nvim-web-devicons" })
 
 	-- I am
 	use("lewis6991/impatient.nvim")
