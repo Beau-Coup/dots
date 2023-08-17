@@ -24,7 +24,7 @@ vim.keymap.set("n", "<leader>lrm", switch_map)
 vim.keymap.set("n", "<leader>fs", ":w<CR>")
 vim.keymap.set("n", "<leader>qs", ":wq<CR>")
 vim.keymap.set("n", "<leader>qq", ":qa<CR>")
-vim.keymap.set("n", "<leader>bd", ":q<CR>")
+vim.keymap.set("n", "<leader>bd", ":bd<CR>")
 
 -- Delete section and put in void buffer, then paste reg contents
 vim.keymap.set("x", "<leader>p", '"_dP')

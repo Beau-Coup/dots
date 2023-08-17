@@ -48,6 +48,12 @@ require("formatter").setup({
 		rust = {
 			require("formatter.filetypes.rust").rustfmt,
 		},
+        c = {
+            require("formatter.filetypes.c").astyle,
+        },
+        asm = {
+            require("formatter.filetypes.asm").asmfmt,
+        },
 		["*"] = {
 			-- "formatter.filetypes.any" defines default configurations for any
 			-- filetype
