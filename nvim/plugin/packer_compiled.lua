@@ -84,6 +84,11 @@ _G.packer_plugins = {
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/catppuccin",
     url = "https://github.com/catppuccin/nvim"
   },
+  ["clangd_extensions.nvim"] = {
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/clangd_extensions.nvim",
+    url = "https://github.com/p00f/clangd_extensions.nvim"
+  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
@@ -99,6 +104,18 @@ _G.packer_plugins = {
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["gitsigns.nvim"] = {
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0" },
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
+    url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["hologram.nvim"] = {
+    config = { "\27LJ\2\nK\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\17auto_display\2\nsetup\rhologram\frequire\0" },
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/hologram.nvim",
+    url = "https://github.com/edluffy/hologram.nvim"
+  },
   ["hop.nvim"] = {
     config = { "\27LJ\2\n1\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\bhop\frequire\0" },
     loaded = true,
@@ -109,6 +126,12 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/impatient.nvim",
     url = "https://github.com/lewis6991/impatient.nvim"
+  },
+  ["magma-nvim"] = {
+    config = { "\27LJ\2\n¿\4\0\0\6\0\26\00096\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\a\0'\4\b\0005\5\t\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\n\0'\3\4\0'\4\v\0005\5\f\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\r\0'\4\14\0005\5\15\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\16\0'\4\17\0005\5\18\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\19\0'\4\20\0005\5\21\0B\0\5\0016\0\0\0009\0\22\0+\1\1\0=\1\23\0006\0\0\0009\0\22\0'\1\25\0=\1\24\0K\0\1\0\nkitty\25magma_image_provider$magma_automatically_open_output\6g\1\0\1\vsilent\2\25:MagmaShowOutput<CR>\14<leader>o\1\0\1\vsilent\2\21:MagmaDelete<CR>\14<leader>d\1\0\1\vsilent\2\29:MagmaReevaluateCell<CR>\14<leader>c\1\0\1\vsilent\2\":<C-u>MagmaEvaluateVisual<CR>\6x\1\0\1\vsilent\2\27:MagmaEvaluateLine<CR>\15<leader>rr\1\0\1\vsilent\2\31:MagmaEvaluateOperator<CR>\14<leader>r\6n\bset\vkeymap\bvim\0" },
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/magma-nvim",
+    url = "https://github.com/dccsillag/magma-nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -162,8 +185,11 @@ _G.packer_plugins = {
     url = "https://github.com/neovim/nvim-lspconfig"
   },
   ["nvim-tree.lua"] = {
+    config = { "\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14nvim-tree\frequire\0" },
+    load_after = {},
     loaded = true,
-    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
+    needs_bufread = false,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua",
     url = "https://github.com/kyazdani42/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {
@@ -181,10 +207,22 @@ _G.packer_plugins = {
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
+  ["obsidian.nvim"] = {
+    config = { "\27LJ\2\nœ\2\0\0\a\0\v\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\0025\3\b\0006\4\0\0'\6\6\0B\4\2\0029\4\a\4B\4\1\2=\4\t\3=\3\n\2B\0\2\1K\0\1\0\rmappings\agf\1\0\0\19gf_passthrough\21obsidian.mapping\15completion\1\0\4\20prepend_note_id\1\23new_notes_location\16current_dir\14min_chars\3\2\rnvim_cmp\2\1\0\2\bdir\31~/Documents/Obsidian Vault\24disable_frontmatter\2\nsetup\robsidian\frequire\0" },
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/obsidian.nvim",
+    url = "https://github.com/epwalsh/obsidian.nvim"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
+  },
+  ["pandoc.nvim"] = {
+    config = { "\27LJ\2\n4\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\vpandoc\frequire\0" },
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/pandoc.nvim",
+    url = "https://github.com/aspeddro/pandoc.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -221,7 +259,7 @@ _G.packer_plugins = {
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/telescope.nvim",
-    url = "https://github.com/nvim-lua/telescope.nvim"
+    url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["toggleterm.nvim"] = {
     loaded = true,
@@ -232,6 +270,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/vim-commentary-yank",
     url = "https://github.com/cherryman/vim-commentary-yank"
+  },
+  ["vim-markdown"] = {
+    loaded = true,
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/vim-markdown",
+    url = "https://github.com/preservim/vim-markdown"
   },
   ["vim-ripgrep"] = {
     loaded = true,
@@ -255,6 +298,10 @@ time([[Defining packer_plugins]], false)
 time([[Config for hop.nvim]], true)
 try_loadstring("\27LJ\2\n1\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\bhop\frequire\0", "config", "hop.nvim")
 time([[Config for hop.nvim]], false)
+-- Config for: obsidian.nvim
+time([[Config for obsidian.nvim]], true)
+try_loadstring("\27LJ\2\nœ\2\0\0\a\0\v\0\0176\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\0025\3\b\0006\4\0\0'\6\6\0B\4\2\0029\4\a\4B\4\1\2=\4\t\3=\3\n\2B\0\2\1K\0\1\0\rmappings\agf\1\0\0\19gf_passthrough\21obsidian.mapping\15completion\1\0\4\20prepend_note_id\1\23new_notes_location\16current_dir\14min_chars\3\2\rnvim_cmp\2\1\0\2\bdir\31~/Documents/Obsidian Vault\24disable_frontmatter\2\nsetup\robsidian\frequire\0", "config", "obsidian.nvim")
+time([[Config for obsidian.nvim]], false)
 -- Config for: startup.nvim
 time([[Config for startup.nvim]], true)
 try_loadstring("\27LJ\2\nG\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\ntheme\tevil\nsetup\fstartup\frequire\0", "config", "startup.nvim")
@@ -263,10 +310,35 @@ time([[Config for startup.nvim]], false)
 time([[Config for nvim-autopairs]], true)
 try_loadstring("\27LJ\2\n@\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0", "config", "nvim-autopairs")
 time([[Config for nvim-autopairs]], false)
+-- Config for: magma-nvim
+time([[Config for magma-nvim]], true)
+try_loadstring("\27LJ\2\n¿\4\0\0\6\0\26\00096\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\a\0'\4\b\0005\5\t\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\n\0'\3\4\0'\4\v\0005\5\f\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\r\0'\4\14\0005\5\15\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\16\0'\4\17\0005\5\18\0B\0\5\0016\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\19\0'\4\20\0005\5\21\0B\0\5\0016\0\0\0009\0\22\0+\1\1\0=\1\23\0006\0\0\0009\0\22\0'\1\25\0=\1\24\0K\0\1\0\nkitty\25magma_image_provider$magma_automatically_open_output\6g\1\0\1\vsilent\2\25:MagmaShowOutput<CR>\14<leader>o\1\0\1\vsilent\2\21:MagmaDelete<CR>\14<leader>d\1\0\1\vsilent\2\29:MagmaReevaluateCell<CR>\14<leader>c\1\0\1\vsilent\2\":<C-u>MagmaEvaluateVisual<CR>\6x\1\0\1\vsilent\2\27:MagmaEvaluateLine<CR>\15<leader>rr\1\0\1\vsilent\2\31:MagmaEvaluateOperator<CR>\14<leader>r\6n\bset\vkeymap\bvim\0", "config", "magma-nvim")
+time([[Config for magma-nvim]], false)
+-- Config for: pandoc.nvim
+time([[Config for pandoc.nvim]], true)
+try_loadstring("\27LJ\2\n4\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\vpandoc\frequire\0", "config", "pandoc.nvim")
+time([[Config for pandoc.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 -- Config for: poetry-nvim
 time([[Config for poetry-nvim]], true)
 try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16poetry-nvim\frequire\0", "config", "poetry-nvim")
 time([[Config for poetry-nvim]], false)
+-- Config for: hologram.nvim
+time([[Config for hologram.nvim]], true)
+try_loadstring("\27LJ\2\nK\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\17auto_display\2\nsetup\rhologram\frequire\0", "config", "hologram.nvim")
+time([[Config for hologram.nvim]], false)
+-- Load plugins in order defined by `after`
+time([[Sequenced loading]], true)
+vim.cmd [[ packadd nvim-web-devicons ]]
+vim.cmd [[ packadd nvim-tree.lua ]]
+
+-- Config for: nvim-tree.lua
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14nvim-tree\frequire\0", "config", "nvim-tree.lua")
+
+time([[Sequenced loading]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

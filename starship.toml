@@ -1,18 +1,19 @@
 # Use custom format:
 format="$directory$git_branch$character"
-add_newline = false
+add_newline = true
 
 palette = "catppuccin_macchiato"
+
 # Prompt symbols 
 [character]
-success_symbol = "[🞈](green bold)"
-error_symbol = "[🞈](red)"
-vicmd_symbol = "[🞈](sky)"
+success_symbol = "[≻](green bold)"
+error_symbol = "[≻](red)"
+vicmd_symbol = "[≻](sky)"
 
 [directory]
 format = "[]($style)[](bg:lavender fg:crust)[$path](bg:lavender fg:crust)[ ]($style)"
 style = "bg:none fg:lavender"
-truncation_length = 3
+truncation_length = 2
 truncate_to_repo=false
 
 [git_branch]

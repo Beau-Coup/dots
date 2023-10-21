@@ -10,21 +10,7 @@ local lspattach = function(client, bufnr)
 	vim.keymap.set({ "n" }, "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, { buffer = bufnr })
-	vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { noremap = true, silent = true })
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
-	vim.keymap.set(
-		"n",
-		"<leader>ds",
-		require("telescope.builtin").lsp_document_symbols,
-		{ desc = "[D]ocument [S]ymbols" }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>ss",
-		require("telescope.builtin").lsp_dynamic_workspace_symbols,
-		{ desc = "[W]orkspace [S]ymbols" }
-	)
+	vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
 
 	if client.server_capabilities.declarationProvider then
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
@@ -44,9 +30,7 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = "rounded",
-})
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
 vim.diagnostic.config({
 	virtual_text = false,
@@ -81,7 +65,8 @@ vim.api.nvim_create_autocmd("CursorHold", {
 lspconfig.tsserver.setup(default_config)
 lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
-lspconfig.texlab.setup(default_config)
+lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
+lspconfig.clangd.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {

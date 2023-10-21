@@ -25,6 +25,9 @@ vim.keymap.set({ "v", "n" }, "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>w", "<C-w>")
 vim.keymap.set("n", "<leader>op", ":NvimTreeToggle<CR>")
 
+-- Delete all buffers but current
+vim.keymap.set("n", "<leader>0", ":%bd|e#|bd#<CR>")
+
 -- See `:help telescope.builtin`
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
@@ -41,6 +44,15 @@ vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>ds", require("telescope.builtin").lsp_document_symbols, { desc = "[D]ocument [S]ymbols" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { noremap = true, silent = true })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { noremap = true, silent = true })
+vim.keymap.set(
+	"n",
+	"<leader>ss",
+	require("telescope.builtin").lsp_dynamic_workspace_symbols,
+	{ desc = "[W]orkspace [S]ymbols" }
+)
 
 -- Set keymaps for debugging
 local dap = require("dap")
@@ -70,7 +82,58 @@ vim.keymap.set("n", "<Leader>df", function()
 	local widgets = require("dap.ui.widgets")
 	widgets.centered_float(widgets.frames)
 end)
-vim.keymap.set("n", "<Leader>ds", function()
-	local widgets = require("dap.ui.widgets")
-	widgets.centered_float(widgets.scopes)
+-- vim.keymap.set("n", "<Leader>ds", function()
+-- 	local widgets = require("dap.ui.widgets")
+-- 	widgets.centered_float(widgets.scopes)
+-- end)
+
+local gs = require("gitsigns")
+-- Navigation
+vim.keymap.set("n", "]c", function()
+	if vim.wo.diff then
+		return "]c"
+	end
+	vim.schedule(function()
+		gs.next_hunk()
+	end)
+	return "<Ignore>"
+end, { expr = true })
+
+vim.keymap.set("n", "[c", function()
+	if vim.wo.diff then
+		return "[c"
+	end
+	vim.schedule(function()
+		gs.prev_hunk()
+	end)
+	return "<Ignore>"
+end, { expr = true })
+
+-- Actions
+-- vim.keymap.set("n", "<leader>hs", gs.stage_hunk)
+-- vim.keymap.set("n", "<leader>hr", gs.reset_hunk)
+vim.keymap.set("v", "<leader>hs", function()
+	gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end)
+vim.keymap.set("v", "<leader>hr", function()
+	gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end)
+vim.keymap.set("n", "<leader>hS", gs.stage_buffer)
+vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk)
+vim.keymap.set("n", "<leader>hR", gs.reset_buffer)
+vim.keymap.set("n", "<leader>hp", gs.preview_hunk)
+vim.keymap.set("n", "<leader>gb", function()
+	gs.blame_line()
+end)
+vim.keymap.set("n", "<leader>gB", function()
+	gs.blame_line({ full = true })
+end)
+vim.keymap.set("n", "<leader>tb", gs.toggle_current_line_blame)
+vim.keymap.set("n", "<leader>hd", gs.diffthis)
+vim.keymap.set("n", "<leader>hD", function()
+	gs.diffthis("~")
+end)
+vim.keymap.set("n", "<leader>td", gs.toggle_deleted)
+
+-- Text object
+vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
