@@ -1,0 +1,15 @@
+* {
+    bg:    #1E1D2Fee;
+    t:    #1E1D2Fff;
+    bga:   #89DCEBff;
+    selected-bg:   #89DCEBff;
+    fg:    #D9E0EEff;
+    active:    #D9E0EEff;
+    fga:   #F28FADff;
+    /*t:     #96CDFBff;*/
+    selected-fg:   #1E1E2Eff;
+    urgent:   #F28FADff;
+    IMG:   #FAE3B0ff;
+    OFF:   #575268ff;
+    ON:    #ABE9B3ff;
+}
