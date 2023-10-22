@@ -1,6 +1,10 @@
 -- Set the theme to wal
 -- require('configs.colorscheme')
-vim.cmd.colorscheme("catppuccin-mocha")
+require("catppuccin").setup({
+    flavour = "mocha", -- latte, frappe, macchiato, mocha
+    transparent_background = true, -- disables setting the background color.
+})
+vim.cmd.colorscheme("catppuccin")
 
 require("configs.opts")
 require("configs.filetype")
