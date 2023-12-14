@@ -25,5 +25,6 @@ require("telescope").setup({
 		mappings = {
 			n = { ["q"] = require("telescope.actions").close },
 		},
+		file_ignore_patterns = { "node_modules", "target" },
 	},
 })

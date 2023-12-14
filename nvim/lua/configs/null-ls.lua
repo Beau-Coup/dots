@@ -13,6 +13,7 @@ null_ls.setup({
 		formatting.stylua,
 		formatting.black,
 		formatting.rustfmt,
+		formatting.clang_format,
 	},
 	-- configure format on save
 	on_attach = function(current_client, bufnr)

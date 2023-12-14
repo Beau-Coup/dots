@@ -135,50 +135,12 @@ return require("packer").startup(function(use)
 			require("obsidian").setup({
 				dir = "~/Documents/Obsidian Vault",
 				-- Optional, completion.
-				completion = {
-					-- If using nvim-cmp, otherwise set to false
-					nvim_cmp = true,
-					-- Trigger completion at 2 chars
-					min_chars = 2,
-					-- Where to put new notes created from completion. Valid options are
-					--  * "current_dir" - put new notes in same directory as the current buffer.
-					--  * "notes_subdir" - put new notes in the default notes subdirectory.
-					new_notes_location = "current_dir",
-					prepend_note_id = false,
-				},
-
 				mappings = {
-					["gf"] = require("obsidian.mapping").gf_passthrough(),
+					["gf"] = require("obsidian").util.gf_passthrough(),
 				},
 
 				-- Optional, set to true if you don't want obsidian.nvim to manage frontmatter.
 				disable_frontmatter = true,
-			})
-		end,
-	})
-
-	-- Jupyter notebooks
-	use({
-		"dccsillag/magma-nvim",
-		run = ":UpdateRemotePlugins",
-		config = function()
-			vim.keymap.set("n", "<leader>r", ":MagmaEvaluateOperator<CR>", { silent = true })
-			vim.keymap.set("n", "<leader>rr", ":MagmaEvaluateLine<CR>", { silent = true })
-			vim.keymap.set("x", "<leader>r", ":<C-u>MagmaEvaluateVisual<CR>", { silent = true })
-			vim.keymap.set("n", "<leader>c", ":MagmaReevaluateCell<CR>", { silent = true })
-			vim.keymap.set("n", "<leader>d", ":MagmaDelete<CR>", { silent = true })
-			vim.keymap.set("n", "<leader>o", ":MagmaShowOutput<CR>", { silent = true })
-
-			vim.g.magma_automatically_open_output = false
-			vim.g.magma_image_provider = "kitty"
-		end,
-	})
-
-	use({
-		"edluffy/hologram.nvim",
-		config = function()
-			require("hologram").setup({
-				auto_display = true, -- WIP automatic markdown image display, may be prone to breaking
 			})
 		end,
 	})

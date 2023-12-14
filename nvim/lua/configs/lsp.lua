@@ -67,6 +67,7 @@ lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
 lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
 lspconfig.clangd.setup(default_config)
+lspconfig.tailwindcss.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {
