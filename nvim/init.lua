@@ -52,6 +52,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 pcall(require("telescope").load_extension, "fzf")
 
+-- Set the theme to wal
+-- require('configs.colorscheme')
+vim.cmd.colorscheme("catppuccin-macchiato")
+vim.o.background = "dark"
+
+require("nvim-web-devicons").setup({})
+
 -- Configure treesitter
 require("configs.treesitter")
 
