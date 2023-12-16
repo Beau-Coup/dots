@@ -1,0 +1,25 @@
+scale trough highlight {
+    background-color: $green;
+	border-radius: 16px;
+    margin: 1px;
+}
+
+scale marks {
+    background-color: $red;
+    color: $red;
+}
+
+.battery {
+   // max-width: 12px;
+   font-size: 6pt;
+   margin-left: 12px;
+   margin-right: -8px;
+   color: $fg;
+}
+
+.battery-module {
+    background-color: $bg1; 
+    border-radius: 16px;
+    margin: 6px;
+    margin-left: 12px;
+}

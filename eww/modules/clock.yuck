@@ -1,0 +1,24 @@
+(defvar date_rev false)
+
+(defwidget clock_module []
+  (eventbox
+    :style "font-family: ProductSans;"
+    (button
+      :class "module"
+      :onclick "${EWW_CMD} open --toggle calendar"
+      :style "font-family: ProductSans;"
+      (box
+        :space-evenly false
+        :style "font-family: ProductSans;"
+        (label
+          :text {time.hour}
+          :style "font-family: ProductSans;"
+          :class "hour")
+        (label
+          :text ":")
+        (label
+          :text "${time.minute} ·"
+          :class "minute")
+        (label 
+          :text "${time.day}, ${time.date}"
+          :class "day")))))

@@ -1,0 +1,160 @@
+@import 'css/colors';
+
+@mixin rounding {
+  border-radius: 16px;
+}
+
+@mixin window {
+  border: 1px solid $border;
+  box-shadow: 0 2px 3px $shadow;
+  margin: 0px 0px 0px;
+  @include rounding;
+}
+
+* {
+  all: unset;
+  transition: 200ms ease;
+}
+
+@import 'css/calendar';
+@import 'css/music';
+@import 'css/osd';
+@import 'css/sidebar';
+@import 'css/system';
+@import 'css/volume';
+@import 'css/battery';
+
+
+.bar {
+  background-color: $bg;
+  color: $fg;
+  border-radius: 0px 0px 12px 12px;
+  label {
+    font-size: 1.3rem;
+  }
+}
+
+tooltip {
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: 8px;
+
+  label {
+    font-size: 1rem;
+  }
+}
+
+.icon,
+.vol-icon label {
+  font-family: 'Material Symbols Outlined';
+}
+
+.module {
+  margin: 0 5px;
+}
+
+.hour {
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+.minute {
+  font-weight: bold;
+  padding-right: 0.7rem;
+}
+
+.date {
+  background: $bg;
+  color: $flamingo;
+
+  border-radius: 12.5px;
+  label {
+    font-size: 1.2rem;
+  }
+}
+
+.sys-text-sub {
+  font-family: ProductSans;
+}
+
+.launcher_module {
+  background-color: $bg;
+  border-radius: 12.5px;
+  margin: 0px 7px 0px 10px;
+}
+
+.vol-icon,
+.volume-icon {
+  font-family: 'Material Symbols Outlined';
+}
+
+.vol-icon label {
+  font-family: ProductSans;
+}
+
+.bright-icon {
+  color: $yellow;
+  margin: 0px -7px 0px 1px;
+  font-family: ProductSans;
+}
+
+.module-bt {
+  font-size: 1.2rem;
+  margin: 0px 1px 0px 1px;
+  font-family: 'Material Symbols Outlined';
+}
+
+.net-icon {
+  font-family: Product Sans;
+}
+
+.net-icon {
+  font-family: 'Material Symbols Outlined';
+}
+
+.power {
+  margin-right: 14px;
+  color: $red;
+}
+
+scale trough {
+  background-color: $bg1;
+  border-radius: 24px;
+  margin: 0 1rem;
+  min-height: 10px;
+  min-width: 70px;
+}
+
+.workspaces {
+  background-color: $blue;
+  color: $bg;
+  padding: 0px 16px;
+  border-radius: 0 0 12 12px;
+}
+
+.pad-back-right {
+  background-color: $blue;
+  color: $bg1;
+  border-radius: 0px 12 12 12;
+}
+
+.pad-top-right {
+  background-color: $bg;
+  border-radius: 18 0 0 0;
+  margin-right: -10px; 
+}
+
+.pad-back-left {
+  background-color: $blue;
+  color: $bg1;
+  border-radius: 12 0 12 12;
+}
+
+.pad-top-left {
+  background-color: $bg;
+  border-radius: 0 18 0 0;
+}
+
+.seperator {
+  color: grey;
+}

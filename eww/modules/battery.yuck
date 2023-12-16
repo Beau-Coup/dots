@@ -1,0 +1,16 @@
+(defwidget battery-module []
+    (box
+        :class "pad-back-right"
+    (box :class "pad-top-right"
+    (box
+        :class "battery-module"
+        :space-evenly false
+        (label :class "battery ${EWW_BATTERY.macsmc-battery.status}" :style "font-size: 10pt":text " ${EWW_BATTERY.macsmc-battery.capacity}") 
+        ;;󰁹
+        (scale
+            :class "batterylevel"
+            :active true
+            :min 0 
+            :max 100
+            :marks "50"
+            :value {EWW_BATTERY.macsmc-battery.capacity})))))

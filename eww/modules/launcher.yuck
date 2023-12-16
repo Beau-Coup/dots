@@ -1,0 +1,5 @@
+(defwidget launcher []
+  (box
+    :class "launcher_module"
+    :orientation "h"
+))
