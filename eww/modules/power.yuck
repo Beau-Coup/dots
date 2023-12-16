@@ -1,0 +1,14 @@
+(defwidget power-module []
+  (eventbox
+    :style "font-family: ProductSans;"
+    (button
+      :class "power module"
+      :onclick "${EWW_CMD} open --toggle power"
+      :style "font-family: ProductSans;"
+      (box
+        :space-evenly false
+        :style "font-family: ProductSans;"
+        (label
+          :text ""
+          :style "font-size: 12pt; font-family: ProductSans;"
+          :class "hour")))))

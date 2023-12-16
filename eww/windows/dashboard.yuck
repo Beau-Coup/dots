@@ -1,0 +1,4 @@
+(defwidget dashboard []
+    (box
+        :class "dashboard-box"
+        :space-evenly false)
