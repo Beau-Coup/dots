@@ -43,14 +43,8 @@ pcall(require("telescope").load_extension, "fzf")
 
 -- Set the theme to wal
 -- require('configs.colorscheme')
-local hour = tonumber(os.date("%H"))
-if hour < 16 and hour >= 6 then
-	vim.cmd.colorscheme("catppuccin-latte")
-	vim.o.background = "light"
-else
-	vim.cmd.colorscheme("catppuccin-macchiato")
-	vim.o.background = "dark"
-end
+vim.cmd.colorscheme("catppuccin-macchiato")
+vim.o.background = "dark"
 
 require("nvim-web-devicons").setup({})
 
