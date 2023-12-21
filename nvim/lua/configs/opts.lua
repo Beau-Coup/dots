@@ -33,7 +33,7 @@ opt.sidescrolloff = 8 -- Columns of context
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartcase = true -- Don't ignore case with capitals
 opt.smartindent = false -- Insert indents automatically
-opt.spelllang = { "en_us" }
+opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 vim.opt.statusline = "%!v:lua.require('configs.statusline').run()"
@@ -49,14 +49,3 @@ opt.textwidth = 0
 opt.wrapmargin = 0
 opt.linebreak = true
 opt.wrap = true -- Disable line wrap
-
--- local augroup = vim.api.nvim_create_augroup("vimRCAugroup", {})
---
--- vim.api.nvim_clear_autocmds({ group = augroup })
--- vim.api.nvim_create_autocmd("WinNew", {
--- 	group = augroup,
--- 	pattern = "*",
--- 	callback = function()
--- 		vim.cmd([[wincmd L]])
--- 	end,
--- })

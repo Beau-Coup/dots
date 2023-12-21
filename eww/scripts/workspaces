@@ -5,7 +5,7 @@ dimmed=("#b4befe")
 empty="#313244"
 
 # get initial focused workspace
-focusedws=$(hyprctl -j monitors | jaq -r '.[] | select(.focused == true) | .activeWorkspace.id')
+focusedws=$(hyprctl -j monitors | jq -r '.[] | .activeWorkspace.id')
 
 declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0 [10]=0)
 declare -A monitormap
@@ -17,35 +17,34 @@ status() {
     mon=${monitormap[${workspaces[$1]}]}
 
     if [ $focusedws -eq "$1" ]; then
-      echo -n "${colors[$mon]}"
+      echo -n "focused"
     else
-      echo -n "${dimmed[$mon]}"
+      echo -n "active"
     fi
   else
-    echo -n "$empty"
+    echo -n "empty"
   fi
 }
 
 # handle workspace create/destroy
 workspace_event() {
   o[$1]=$2
-  while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | gojq -r '.[]|"\(.id) \(.monitor)"')
+  while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -r '.[]|"\(.id) \(.monitor)"')
 }
 # handle monitor (dis)connects
 monitor_event() {
-  while read -r k v; do monitormap["$k"]=$v; done < <(hyprctl -j monitors | gojq -r '.[]|"\(.name) \(.id) "')
+  while read -r k v; do monitormap["$k"]=$v; done < <(hyprctl -j monitors | jq -r '.[]|"\(.name) \(.id) "')
 }
 
 # generate the json for eww
 generate() {
-  # echo -n '['
+  echo -n '['
 
-  # for i in {1..10}; do
-  #   echo -n ''$([ $i -eq 1 ] || echo ,) '{ "number": "'"$i"'", "color": "'$(status "$i")'" }'
-  # done
-  echo '{ "focused": "'$focusedws'" }'
+  for i in {1..10}; do
+    echo -n ''$([ $i -eq 1 ] || echo ,) '{ "number": "'"$i"'", "color": "'$(status "$i")'" }'
+  done
 
-  # echo ']'
+  echo ']'
 }
 
 # setup
@@ -54,7 +53,7 @@ generate() {
 monitor_event
 
 # add workspaces
-while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | gojq -r '.[]|"\(.id) \(.monitor)"')
+while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -r '.[]|"\(.id) \(.monitor)"')
 
 # check occupied workspaces
 for num in "${!workspaces[@]}"; do

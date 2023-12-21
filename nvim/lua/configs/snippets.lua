@@ -135,10 +135,6 @@ rec_table = function()
 	})
 end
 
--- Functions for alignment environments
--- local align_node = function(args)
---     return sn(nil, {i(1), t("&"), i(2)})
-
 -- integral functions
 -- generate \int_{<>}^{<>}
 local int1 = function(args, snip)
@@ -558,7 +554,8 @@ tex.snippets = {
 			i(1, "\\varphi"),
 			c(2, {
 				i(nil),
-				sn(nil, { t("\\mathbb{"), i(1), t("}") }),
+				sn(nil, { t("mathbb{"), i(1), t("}") }),
+				sn(nil, { t("mathcal{"), i(1), t("}") }),
 			}),
 			c(3, {
 				i(nil),

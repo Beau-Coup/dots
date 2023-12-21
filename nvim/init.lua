@@ -16,15 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Use plugins :)
 require("plugins")
 
-require("catppuccin").setup({
-	flavour = "mocha", -- latte, frappe, macchiato, mocha
-	transparent_background = true, -- disables setting the background color.
-})
-vim.cmd.colorscheme("catppuccin")
-
-require("configs.opts")
-require("configs.filetype")
-
 require("configs.telescope")
 require("configs.hl")
 
@@ -51,13 +42,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 pcall(require("telescope").load_extension, "fzf")
-
--- Set the theme to wal
--- require('configs.colorscheme')
-vim.cmd.colorscheme("catppuccin-macchiato")
-vim.o.background = "dark"
-
-require("nvim-web-devicons").setup({})
 
 -- Configure treesitter
 require("configs.treesitter")

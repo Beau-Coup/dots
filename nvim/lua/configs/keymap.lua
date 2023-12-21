@@ -24,7 +24,7 @@ vim.keymap.set("n", "<leader>lrm", switch_map)
 vim.keymap.set("n", "<leader>fs", ":w<CR>")
 vim.keymap.set("n", "<leader>qs", ":wq<CR>")
 vim.keymap.set("n", "<leader>qq", ":qa<CR>")
-vim.keymap.set("n", "<leader>bd", ":bd<CR>")
+vim.keymap.set("n", "<leader>bd", ":q<CR>")
 
 -- Delete section and put in void buffer, then paste reg contents
 vim.keymap.set("x", "<leader>p", '"_dP')
@@ -45,7 +45,7 @@ vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { d
 vim.keymap.set("n", "<leader>/", function()
 	-- You can pass additional configuration to telescope to change theme, layout, etc.
 	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-		winblend = 10,
+		winblend = 90,
 		previewer = false,
 	}))
 end, { desc = "[/] Fuzzily search in current buffer" })

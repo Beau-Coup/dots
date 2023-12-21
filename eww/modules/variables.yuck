@@ -16,4 +16,3 @@
 (deflisten music_cover "scripts/music cover")
 (deflisten net "scripts/net")
 (deflisten volume "scripts/volume")
-(deflisten workspace "scripts/workspaces")

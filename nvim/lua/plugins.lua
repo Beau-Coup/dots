@@ -155,6 +155,9 @@ local plugins = {
 	-- Icons
 	"kyazdani42/nvim-web-devicons",
 
+	-- Icons
+	use("kyazdani42/nvim-web-devicons")
+
 	-- Tree
 	{
 		"kyazdani42/nvim-tree.lua",
@@ -178,6 +181,15 @@ local plugins = {
 
 	-- Glorious vimtex
 	"lervag/vimtex",
+
+	use("preservim/vim-markdown")
+
+	use({
+		"aspeddro/pandoc.nvim",
+		config = function()
+			require("pandoc").setup()
+		end,
+	})
 
 	-- Motions
 	"tpope/vim-surround",
