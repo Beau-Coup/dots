@@ -35,7 +35,7 @@ else
       class="wifi-connected"
     fi
 
-    echo '{ "essid": "'"$essid"'", "icon": "'"$icon"'", "color": "'"$color"'", "class": "'"$class"'" }'
+    echo '{ "essid": "'"$essid"'", "icon": "", "color": "'"$color"'", "class": "'"$class"'" }'
 
     sleep 3
   done

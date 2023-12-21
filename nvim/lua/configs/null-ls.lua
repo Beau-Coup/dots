@@ -13,10 +13,7 @@ null_ls.setup({
 		formatting.stylua,
 		formatting.black,
 		formatting.rustfmt,
-        formatting.asmfmt,
-        formatting.clang_format.with({
-            extra_args = { "-style={BasedOnStyle: Google, IndentWidth: 4}" }
-        }),
+		formatting.clang_format,
 	},
 	-- configure format on save
 	on_attach = function(current_client, bufnr)

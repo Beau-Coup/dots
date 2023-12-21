@@ -128,9 +128,41 @@ scale trough {
 .workspaces {
   background-color: $blue;
   color: $bg;
-  padding: 0px 16px;
+  padding: 0px 8px;
   border-radius: 0 0 12 12px;
 }
+
+.ws-pill {
+  background-color: $surface0;
+  margin: 4px 0px;
+  padding: 4px 8px;
+  border-radius: 100px;
+
+}
+
+.workspace {
+    background-color: $mantle;
+    padding: 4 6px;
+    border-radius: 1rem;
+    margin: 2px;
+
+    transition: 1.0s;
+    &.focused {
+        background-color: $blue;
+        padding: 6px 8px;
+    }
+
+    &.active {
+        background-color: $lavender;
+    }
+}
+
+// .workspace:hover {
+//     background-color: mix($onPrimary, $onSurface, 70%);
+//     &.focused {
+//         background-color: mix($primary, $onSurface, 70%);
+//     }
+// }
 
 .pad-back-right {
   background-color: $blue;

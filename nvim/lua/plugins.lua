@@ -58,13 +58,27 @@ return require("packer").startup(function(use)
 	use("theHamsta/nvim-dap-virtual-text")
 	use("nvim-telescope/telescope-dap.nvim")
 
+	-- Icons
+	use("kyazdani42/nvim-web-devicons")
+
 	-- Tree
-	use("kyazdani42/nvim-tree.lua")
+	use({
+		"kyazdani42/nvim-tree.lua",
+		requires = { "kyazdani42/nvim-web-devicons" },
+		after = "nvim-web-devicons",
+		config = function()
+			require("nvim-tree").setup()
+		end,
+	})
 
 	-- Fuzzyfinding
 	use("nvim-lua/popup.nvim")
 	use("nvim-lua/plenary.nvim")
-	use("nvim-lua/telescope.nvim")
+	use({
+		"nvim-telescope/telescope.nvim",
+		requires = { { "nvim-lua/plenary.nvim" } },
+	})
+
 	use("jremmen/vim-ripgrep")
 
 	--Toggleterm
@@ -72,6 +86,15 @@ return require("packer").startup(function(use)
 
 	-- Glorious vimtex
 	use("lervag/vimtex")
+
+	use("preservim/vim-markdown")
+
+	use({
+		"aspeddro/pandoc.nvim",
+		config = function()
+			require("pandoc").setup()
+		end,
+	})
 
 	-- Motions
 	use("tpope/vim-surround")
@@ -90,9 +113,35 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- icons
-	use({ "nvim-tree/nvim-web-devicons" })
-
 	-- I am
 	use("lewis6991/impatient.nvim")
+
+	-- Blame people
+	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
+
+	-- Obsidian
+	use({
+		"epwalsh/obsidian.nvim",
+		requires = {
+			-- Required.
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			require("obsidian").setup({
+				dir = "~/Documents/Obsidian Vault",
+				-- Optional, completion.
+				mappings = {
+					["gf"] = require("obsidian").util.gf_passthrough(),
+				},
+
+				-- Optional, set to true if you don't want obsidian.nvim to manage frontmatter.
+				disable_frontmatter = true,
+			})
+		end,
+	})
 end)

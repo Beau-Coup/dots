@@ -1,34 +1,31 @@
--- Some sane settings
-vim.o.smartcase = true
-vim.o.showmode = false
-vim.bo.swapfile = false
-vim.o.backup = false
-vim.o.undodir = vim.fn.stdpath("config") .. "/undodir"
-vim.o.undofile = true
-vim.o.incsearch = true
-vim.o.hidden = true
-vim.o.completeopt = "menuone,noinsert,noselect"
-vim.bo.autoindent = true
-vim.bo.smartindent = true
-vim.o.updatetime = 700
+-- Set the theme to wal
+-- require('configs.colorscheme')
+require("catppuccin").setup({
+    flavour = "mocha", -- latte, frappe, macchiato, mocha
+    transparent_background = true, -- disables setting the background color.
+})
+vim.cmd.colorscheme("catppuccin")
 
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-vim.wo.number = true
-vim.wo.relativenumber = true
-vim.wo.signcolumn = "yes"
-vim.wo.wrap = false
+require("configs.opts")
+require("configs.filetype")
 
 -- Use plugins :)
 require("plugins")
 
+require("configs.telescope")
+require("configs.hl")
+
 require("configs.keymap")
 
 require("configs.hop")
+
+require("configs.snippets")
+
 -- LanguageTool
 vim.g.languagetool_jar = "$HOME/Downloads/LanguageTool-5.2/languagetool-commandline.jar"
+
+-- Status line
+vim.opt.statusline = "%!v:lua.require('configs.statusline').run()"
 
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -40,13 +37,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 pcall(require("telescope").load_extension, "fzf")
-
--- Set the theme to wal
--- require('configs.colorscheme')
-vim.cmd.colorscheme("catppuccin-macchiato")
-vim.o.background = "dark"
-
-require("nvim-web-devicons").setup({})
 
 -- Configure treesitter
 require("configs.treesitter")
@@ -69,7 +59,7 @@ autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 ]])
 
 -- setup neotree
-require("configs.tree")
+-- require("configs.tree")
 
 -- Toggleterm
 require("configs.toggleterm")
