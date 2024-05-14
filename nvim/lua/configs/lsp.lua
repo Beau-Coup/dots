@@ -87,6 +87,7 @@ lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
 lspconfig.clangd.setup(default_config)
 lspconfig.tailwindcss.setup(default_config)
 lspconfig.asm_lsp.setup(default_config)
+lspconfig.zls.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {
