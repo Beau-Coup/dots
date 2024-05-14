@@ -150,6 +150,26 @@ local int2 = function(args, snip)
 	return sn(nil, nodes)
 end
 
+local mat = function(args, snip)
+	local rows = tonumber(snip.captures[2])
+	local cols = tonumber(snip.captures[3])
+	local nodes = {}
+	local ins_indx = 1
+	for j = 1, rows do
+		table.insert(nodes, r(ins_indx, tostring(j) .. "x1", i(1)))
+		ins_indx = ins_indx + 1
+		for k = 2, cols do
+			table.insert(nodes, t(" & "))
+			table.insert(nodes, r(ins_indx, tostring(j) .. "x" .. tostring(k), i(1)))
+			ins_indx = ins_indx + 1
+		end
+		table.insert(nodes, t({ " \\\\", "" }))
+	end
+	-- fix last node.
+	nodes[#nodes] = t(" \\\\")
+	return sn(nil, nodes)
+end
+
 tex.snippets = {
 	s(
 		{
@@ -210,22 +230,59 @@ tex.snippets = {
 		t({ "}", "" }),
 		i(2),
 		f(function(args, _, _)
-			return "\n\\end{" .. args[1][1] .. "}"
-		end, { 1 }, {}),
+			return { "\t", "\\end{" .. args[1][1] .. "}" }
+		end, { 1 }),
 		i(0),
 	}),
-	s({ trig = "ff", show_condition = tex.in_mathzone }, {
-		t("\\frac{"),
+	s(
+		{ trig = "uu", snippetType = "autosnippet", wordTrig = false },
+		fmta("_{<>}", {
+			i(1),
+		}),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "ii", snippetType = "autosnippet", wordTrig = false },
+		fmta("^{<>}", {
+			i(1),
+		}),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "rr", snippetType = "autosnippet", wordTrig = true },
+		fmta("\\mathbb{R}^{<>}", { i(1) }),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "irr", snippetType = "autosnippet", wordTrig = true },
+		fmta("\\in \\mathbb{R}^{<>}", { i(1) }),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "ff", snippetType = "autosnippet" },
+		fmta("\\frac{<>}{<>}", {
+			i(1),
+			i(2),
+		}),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "ee", snippetType = "autosnippet" },
+		fmta("e^{<>}", {
+			i(1),
+		}),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s({ trig = "nn", snippetType = "autosnippet" }, {
+		t({ "\\begin{equation}", "\t" }),
 		i(1),
-		t("}{"),
-		i(2),
-		t("}"),
+		t({ "", "\\end{equation}", "" }),
 		i(0),
 	}),
 	s({ trig = "eq", show_condition = tex.in_mathzone }, {
-		t({ "\\begin{equation}", "" }),
+		t({ "\\begin{equation}", "\t" }),
 		i(1),
-		t({ "\\end{equation}", "" }),
+		t({ "", "\\end{equation}", "" }),
 		i(0),
 	}),
 	s({ trig = "dm", show_condition = tex.in_mathzone }, {
@@ -234,6 +291,38 @@ tex.snippets = {
 		t({ "})" }),
 		i(0),
 	}),
+	s(
+		{
+			trig = "([bBpvV])mat(%d+)x(%d+)([ar])",
+			regTrig = true,
+			name = "matrix",
+			dscr = "arbitrary matrix gen snippet",
+			hidden = true,
+		},
+		fmt(
+			[[
+    \begin{<>}<>
+    <>
+    \end{<>}]],
+			{
+				f(function(_, snip)
+					return snip.captures[1] .. "matrix" -- captures matrix type
+				end),
+				f(function(_, snip)
+					if snip.captures[4] == "a" then
+						local out = string.rep("c", tonumber(snip.captures[3]) - 1) -- array for augment
+						return "[" .. out .. "|c]"
+					end
+					return "" -- otherwise return nothing
+				end),
+				d(1, mat),
+				f(function(_, snip)
+					return snip.captures[1] .. "matrix" -- i think i could probably use a repeat node but whatever
+				end),
+			},
+			{ delimiters = "<>" }
+		)
+	),
 	s({ trig = "math", show_condition = tex.in_text }, {
 		t("$$"),
 		c(1, {
@@ -243,7 +332,7 @@ tex.snippets = {
 		t("$$"),
 		i(0),
 	}),
-	s({ trig = "vb", show_condition = tex.in_mathzone }, {
+	s({ trig = "v", show_condition = tex.in_mathzone }, {
 		t("\\vb{"),
 		i(1),
 		t("}"),

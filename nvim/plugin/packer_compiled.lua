@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/ab/.cache/nvim/packer_hererocks/2.1.1699801871/share/lua/5.1/?.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1699801871/share/lua/5.1/?/init.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1699801871/lib/luarocks/rocks-5.1/?.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1699801871/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/ab/.cache/nvim/packer_hererocks/2.1.1699801871/lib/lua/5.1/?.so"
+local package_path_str = "/Users/ab/.cache/nvim/packer_hererocks/2.1.1710088188/share/lua/5.1/?.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1710088188/share/lua/5.1/?/init.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1710088188/lib/luarocks/rocks-5.1/?.lua;/Users/ab/.cache/nvim/packer_hererocks/2.1.1710088188/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/ab/.cache/nvim/packer_hererocks/2.1.1710088188/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -196,7 +196,7 @@ _G.packer_plugins = {
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
   ["obsidian.nvim"] = {
-    config = { "\27LJ\2\n¸\1\0\0\a\0\t\0\0166\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\6\0006\4\0\0'\6\1\0B\4\2\0029\4\4\0049\4\5\4B\4\1\2=\4\a\3=\3\b\2B\0\2\1K\0\1\0\rmappings\agf\1\0\0\19gf_passthrough\tutil\1\0\2\24disable_frontmatter\2\bdir\31~/Documents/Obsidian Vault\nsetup\robsidian\frequire\0" },
+    config = { "\27LJ\2\nà\1\0\0\a\0\v\0\0186\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\6\0006\4\0\0'\6\1\0B\4\2\0029\4\4\0049\4\5\4B\4\1\2=\4\a\3=\3\b\0025\3\t\0=\3\n\2B\0\2\1K\0\1\0\aui\1\0\1\venable\1\rmappings\agf\1\0\1\agf\0\19gf_passthrough\tutil\1\0\4\bdir\31~/Documents/Obsidian Vault\24disable_frontmatter\2\aui\0\rmappings\0\nsetup\robsidian\frequire\0" },
     loaded = true,
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/obsidian.nvim",
     url = "https://github.com/epwalsh/obsidian.nvim"
@@ -228,10 +228,10 @@ _G.packer_plugins = {
     path = "/Users/ab/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
-  ["rust-tools.nvim"] = {
+  rustaceanvim = {
     loaded = true,
-    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/rust-tools.nvim",
-    url = "https://github.com/simrat39/rust-tools.nvim"
+    path = "/Users/ab/.local/share/nvim/site/pack/packer/start/rustaceanvim",
+    url = "https://github.com/mrcjkb/rustaceanvim"
   },
   ["startup.nvim"] = {
     config = { "\27LJ\2\nG\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\ntheme\tevil\nsetup\fstartup\frequire\0" },
@@ -282,14 +282,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
--- Config for: hop.nvim
-time([[Config for hop.nvim]], true)
-try_loadstring("\27LJ\2\n1\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\bhop\frequire\0", "config", "hop.nvim")
-time([[Config for hop.nvim]], false)
+-- Config for: obsidian.nvim
+time([[Config for obsidian.nvim]], true)
+try_loadstring("\27LJ\2\nà\1\0\0\a\0\v\0\0186\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\6\0006\4\0\0'\6\1\0B\4\2\0029\4\4\0049\4\5\4B\4\1\2=\4\a\3=\3\b\0025\3\t\0=\3\n\2B\0\2\1K\0\1\0\aui\1\0\1\venable\1\rmappings\agf\1\0\1\agf\0\19gf_passthrough\tutil\1\0\4\bdir\31~/Documents/Obsidian Vault\24disable_frontmatter\2\aui\0\rmappings\0\nsetup\robsidian\frequire\0", "config", "obsidian.nvim")
+time([[Config for obsidian.nvim]], false)
 -- Config for: pandoc.nvim
 time([[Config for pandoc.nvim]], true)
 try_loadstring("\27LJ\2\n4\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\vpandoc\frequire\0", "config", "pandoc.nvim")
@@ -298,18 +294,22 @@ time([[Config for pandoc.nvim]], false)
 time([[Config for poetry-nvim]], true)
 try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16poetry-nvim\frequire\0", "config", "poetry-nvim")
 time([[Config for poetry-nvim]], false)
--- Config for: obsidian.nvim
-time([[Config for obsidian.nvim]], true)
-try_loadstring("\27LJ\2\n¸\1\0\0\a\0\t\0\0166\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\6\0006\4\0\0'\6\1\0B\4\2\0029\4\4\0049\4\5\4B\4\1\2=\4\a\3=\3\b\2B\0\2\1K\0\1\0\rmappings\agf\1\0\0\19gf_passthrough\tutil\1\0\2\24disable_frontmatter\2\bdir\31~/Documents/Obsidian Vault\nsetup\robsidian\frequire\0", "config", "obsidian.nvim")
-time([[Config for obsidian.nvim]], false)
 -- Config for: startup.nvim
 time([[Config for startup.nvim]], true)
 try_loadstring("\27LJ\2\nG\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\ntheme\tevil\nsetup\fstartup\frequire\0", "config", "startup.nvim")
 time([[Config for startup.nvim]], false)
+-- Config for: hop.nvim
+time([[Config for hop.nvim]], true)
+try_loadstring("\27LJ\2\n1\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\bhop\frequire\0", "config", "hop.nvim")
+time([[Config for hop.nvim]], false)
 -- Config for: nvim-autopairs
 time([[Config for nvim-autopairs]], true)
 try_loadstring("\27LJ\2\n@\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0", "config", "nvim-autopairs")
 time([[Config for nvim-autopairs]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-web-devicons ]]

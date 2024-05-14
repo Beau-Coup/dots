@@ -1,16 +1,29 @@
 -- Set the theme to wal
 -- require('configs.colorscheme')
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Use plugins :)
+require("plugins")
+
 require("catppuccin").setup({
-    flavour = "mocha", -- latte, frappe, macchiato, mocha
-    transparent_background = true, -- disables setting the background color.
+	flavour = "mocha", -- latte, frappe, macchiato, mocha
+	transparent_background = true, -- disables setting the background color.
 })
 vim.cmd.colorscheme("catppuccin")
 
 require("configs.opts")
 require("configs.filetype")
-
--- Use plugins :)
-require("plugins")
 
 require("configs.telescope")
 require("configs.hl")
@@ -74,7 +87,7 @@ end
 vim.keymap.set("n", "<leader>gg", ":lua _LG_TOGGLE()<CR>")
 
 -- Mason
-require("mason").setup()
+-- require("mason").setup()
 
 --dap
 require("configs.dap")

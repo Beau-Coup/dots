@@ -68,6 +68,7 @@ lspconfig.lua_ls.setup(default_config)
 lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
 lspconfig.clangd.setup(default_config)
 lspconfig.tailwindcss.setup(default_config)
+lspconfig.zls.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {
@@ -93,16 +94,11 @@ lspconfig.lua_ls.setup({
 	},
 })
 
-require("rust-tools").setup({
+vim.g.rustaceanvim = {
 	server = {
 		on_attach = lspattach,
 	},
-	tools = {
-		inlay_hints = {
-			show_parameter_hints = false,
-		},
-	},
-})
+}
 
 require("clangd_extensions").setup({
 	server = default_config,
