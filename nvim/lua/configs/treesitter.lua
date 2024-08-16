@@ -1,7 +1,10 @@
 vim.opt.runtimepath:append("$HOME/.local/share/treesitter")
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = {"rust", "lua", "python", "c", "zig"},
+	ensure_installed = {"rust", "lua", "python", "c", "zig", "vim", "toml"},
+    sync_install = false,
+    auto_install = false,
+    parser_install_dir = "$HOME/.local/share/treesitter",
 	ignore_install = {},
 	highlight = {
 		enable = true,

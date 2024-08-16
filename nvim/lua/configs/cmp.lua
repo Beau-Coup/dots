@@ -102,6 +102,8 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "gh_issues" },
 		{ name = "obsidian.nvim" },
+		{ name = "omni" },
+		{ name = "neorg" },
 	}),
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,

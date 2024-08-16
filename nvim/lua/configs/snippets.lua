@@ -23,6 +23,7 @@ local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 local key = require("luasnip.nodes.key_indexer").new_key
 
+local notify = require("notify")
 -- require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
 
 -- If you're reading this file for the first time, best skip to around line 190
@@ -98,7 +99,6 @@ local table_node = function(args)
 	local tabs = {}
 	local count
 	local cols = args[1][1]:gsub("%s", ""):gsub("|", "")
-	print(cols)
 	count = cols:len()
 	for j = 1, count do
 		local iNode = i(j)
@@ -123,6 +123,10 @@ rec_table = function()
 		}),
 	})
 end
+
+-- Functions for alignment environments
+-- local align_node = function(args)
+--     return sn(nil, {i(1), t("&"), i(2)})
 
 -- integral functions
 -- generate \int_{<>}^{<>}
@@ -170,6 +174,22 @@ local mat = function(args, snip)
 	return sn(nil, nodes)
 end
 
+-- Define suffix modifiers
+-- k: the trigger, v: sub
+local suffs = {
+	hat = "hat",
+	til = "tilde",
+	ba = "overline",
+	dd = "ddot",
+	["do"] = "dot",
+}
+
+local suffixes = {}
+for k, _ in pairs(suffs) do
+	suffixes[#suffixes + 1] = k
+end
+local suffix_match = table.concat(suffixes, "|")
+
 tex.snippets = {
 	s(
 		{
@@ -197,7 +217,7 @@ tex.snippets = {
 			i(0),
 		}, { delimiters = "<>" })
 	),
-	s("tab", { -- TODO: Do this for matrices, and fix it
+	s("tab", {
 		t("\\begin{tabular}{"),
 		i(1),
 		t({ "}", "" }),
@@ -235,17 +255,27 @@ tex.snippets = {
 		i(0),
 	}),
 	s(
-		{ trig = "uu", snippetType = "autosnippet", wordTrig = false },
-		fmta("_{<>}", {
-			i(1),
-		}),
-		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+		{ trig = "([%\\]?[A-Za-z]+)(%d+)", regTrig = true, name = "auto subscript", hidden = true },
+		fmta([[<><>_{<>}<>]], {
+			f(function(_, _)
+				return tex.in_mathzone() and "" or "$"
+			end),
+			f(function(_, snip)
+				return snip.captures[1] -- Identify if in math zone and add inline math delims
+			end),
+			f(function(_, snip)
+				return snip.captures[2]
+			end),
+			f(function(_, _)
+				return tex.in_mathzone() and "" or "$"
+			end),
+		})
 	),
+	s({ trig = "uu", wordTrig = false, snippetType = "autosnippet", hidden = true }, fmta([[_{<>}]], { i(1) })),
+	s({ trig = "ii", wordTrig = false, snippetType = "autosnippet", hidden = true }, fmta([[^{<>}]], { i(1) })),
 	s(
-		{ trig = "ii", snippetType = "autosnippet", wordTrig = false },
-		fmta("^{<>}", {
-			i(1),
-		}),
+		{ trig = "tp", snippetType = "autosnippet", wordTrig = false },
+		fmta("^{\\mathsf{T}}", {}),
 		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
 	),
 	s(
@@ -279,12 +309,6 @@ tex.snippets = {
 		t({ "", "\\end{equation}", "" }),
 		i(0),
 	}),
-	s({ trig = "eq", show_condition = tex.in_mathzone }, {
-		t({ "\\begin{equation}", "\t" }),
-		i(1),
-		t({ "", "\\end{equation}", "" }),
-		i(0),
-	}),
 	s({ trig = "dm", show_condition = tex.in_mathzone }, {
 		t({ "\\mqty(\\dmat[0]{" }),
 		i(1),
@@ -293,43 +317,110 @@ tex.snippets = {
 	}),
 	s(
 		{
-			trig = "([bBpvV])mat(%d+)x(%d+)([ar])",
+			trig = "([bBpvV])(%d+)x(%d+)",
 			regTrig = true,
 			name = "matrix",
 			dscr = "arbitrary matrix gen snippet",
 			hidden = true,
 		},
-		fmt(
+		fmta(
 			[[
-    \begin{<>}<>
+    \begin{<>}
     <>
     \end{<>}]],
 			{
 				f(function(_, snip)
 					return snip.captures[1] .. "matrix" -- captures matrix type
 				end),
-				f(function(_, snip)
-					if snip.captures[4] == "a" then
-						local out = string.rep("c", tonumber(snip.captures[3]) - 1) -- array for augment
-						return "[" .. out .. "|c]"
-					end
-					return "" -- otherwise return nothing
-				end),
 				d(1, mat),
 				f(function(_, snip)
 					return snip.captures[1] .. "matrix" -- i think i could probably use a repeat node but whatever
 				end),
-			},
-			{ delimiters = "<>" }
+			}
 		)
 	),
-	s({ trig = "math", show_condition = tex.in_text }, {
-		t("$$"),
-		c(1, {
-			sn(nil, { t({ "", "" }), i(1), t({ "", "" }) }),
-			i(nil),
-		}),
-		t("$$"),
+	s({ trig = "mt", show_condition = tex.in_text }, {
+		t({ "\\[", "\t" }),
+		i(1),
+		t({ "", "\\]" }),
+		i(0),
+	}),
+	s({ trig = "mmica" }, {
+		fmta([[math <> math]], { i(1) }),
+	}),
+	s(
+		{ trig = "math(.*)math", regTrig = true, dscr = "Evaluate mathematica", hidden = true },
+		fmta([[<>]], {
+			f(function(_, snip)
+				local code = "'ToString[" .. snip.captures[1] .. ", TeXForm]'"
+				local openPop = io.popen("wolframscript -code " .. code, "r")
+				if openPop ~= nil then
+					local out = openPop:read("*a")
+					t = {}
+					for str in string.gmatch(out, "([^\n]+)") do
+						t[#t + 1] = str
+					end
+					openPop:close()
+					if t then
+						return t
+					else
+						require("notify")("Failed to parse snippet:" .. out, "error", { title = "Mathematica" })
+					end
+				end
+				return "math" .. snip.captures[1] .. "math"
+			end),
+		})
+	),
+	s(
+		{ trig = "(%b())/", regTrig = true, snippetType = "autosnippet", dscr = "() fraction", hidden = true },
+		fmta([[\frac{<>}{<>}]], { f(function(_, snip)
+			return snip.captures[1]:sub(2, -2)
+		end), i(1) })
+	),
+	s(
+		{ trig = "(%S+)/", regTrig = true, snippetType = "autosnippet", dscr = "fraction", hidden = true },
+		fmta([[\frac{<>}{<>}]], { f(function(_, snip)
+			return snip.captures[1]
+		end), i(1) })
+	),
+	s(
+		{ trig = "align", snippetType = "autosnippet", hidden = false },
+		fmta(
+			[[\begin{<>}
+    <>
+\end{<>}]],
+			{
+				c(1, { t("align"), t("aligned") }),
+				-- recursive node, maybe??
+				i(2),
+				f(function(args, _, _)
+					return args[1][1]
+				end, { 1 }),
+			}
+		)
+	),
+	s(
+		{ trig = "alphl", snippetType = "autosnippet", wordTrig = true },
+		fmta(
+			[[\begin{list}{(\alph{l2})}{\usecounter{l2}}
+    <> 
+\end{list}]],
+			{ i(1) }
+		)
+	),
+	s(
+		{ trig = "arl", snippetType = "autosnippet", wordTrig = true },
+		fmta(
+			[[\begin{list}{\bf \arabic{l1}}{\usecounter{l1}}
+<> 
+\end{list}]],
+			{ i(1) }
+		)
+	),
+	s({ trig = " mk", regTrig = true, show_condition = tex.in_text }, {
+		t("$"),
+		i(1),
+		t("$"),
 		i(0),
 	}),
 	s({ trig = "v", show_condition = tex.in_mathzone }, {
@@ -344,14 +435,8 @@ tex.snippets = {
 		t("}"),
 		i(0),
 	}),
-	s({ trig = "mc", show_condition = tex.in_mathzone }, {
-		t("\\mathcal{"),
-		i(1),
-		t("}"),
-		i(0),
-	}),
 	s(
-		{ trig = "map", show_condition = tex.in_text },
+		{ trig = "fun", show_condition = tex.in_text },
 		fmt([[${}: {} \to {}$]], {
 			i(1, "\\varphi"),
 			c(2, {
@@ -377,7 +462,49 @@ tex.snippets = {
 		{ trig = "w", show_condition = tex.in_mathzone, dscr = "Wedge operator", dosctring = "\\wedge" },
 		{ t("\\wedge") }
 	),
+	s(
+		{
+			trig = [[(\S*)(?:\.,|,\.)]],
+			trigEngine = "ecma",
+			snippetType = "autosnippet",
+			dscr = "Auto vec",
+			hidden = true,
+		},
+		fmta(
+			[[\vb{<>}]],
+			f(function(_, snip)
+				return snip.captures[1]
+			end)
+		)
+	),
+	s(
+		{ trig = "(%u)%1", snippetType = "autosnippet", regTrig = true, hidden = true },
+		fmta(
+			[[\mathcal{<>}]],
+			f(function(_, snip)
+				return snip.captures[1]
+			end)
+		)
+	),
+	s(
+		{
+			trig = [[(\S+)(]] .. suffix_match .. ")", -- TODO: Matches from `suffs` table
+			trigEngine = "ecma",
+			snippetType = "autosnippet",
+			dscr = "Auto suffix",
+			hidden = true,
+		},
+		fmta([[\<>{<>}]], {
+			f(function(_, snip)
+				return suffs[snip.captures[2]]
+			end),
+			f(function(_, snip)
+				return snip.captures[1]
+			end),
+		})
+	),
 	-- TODO: Triangle matrix macro where you get to choose upper and lower part
+	-- TODO: Macro for aligned environment that automagically adds the <> &= <> \\
 }
 
 ls.add_snippets("tex", tex.snippets, { key = "tex-snips" })

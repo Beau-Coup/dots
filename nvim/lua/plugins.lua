@@ -1,12 +1,10 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 local plugins = {
-	{ "nvim-treesitter/nvim-treesitter", 
-        build = ":TSUpdate",
-	 },
+	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	-- "williamboman/mason.nvim",
 	-- "williamboman/mason-lspconfig.nvim",
-    "github/copilot.vim",
+	{ "github/copilot.vim", cmd = "Copilot" },
 
 	"jose-elias-alvarez/null-ls.nvim",
 	"jayp0521/mason-null-ls.nvim",
@@ -49,7 +47,7 @@ local plugins = {
 	},
 
 	-- Debugging
-	{"mfussenegger/nvim-dap", dependencies = {"nvim-neotest/nvim-nio"}},
+	{ "mfussenegger/nvim-dap", dependencies = { "nvim-neotest/nvim-nio" } },
 	"rcarriga/nvim-dap-ui",
 	"theHamsta/nvim-dap-virtual-text",
 	"nvim-telescope/telescope-dap.nvim",
@@ -119,30 +117,124 @@ local plugins = {
 		end,
 	},
 
+	-- lazy.nvim
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			"rcarriga/nvim-notify",
+		},
+		config = function()
+			require("noice").setup({
+				lsp = {
+					-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+					},
+				},
+				-- you can enable a preset for easier configuration
+				presets = {
+					bottom_search = true, -- use a classic bottom cmdline for search
+					command_palette = true, -- position the cmdline and popupmenu together
+					long_message_to_split = true, -- long messages will be sent to a split
+					inc_rename = false, -- enables an input dialog for inc-rename.nvim
+					lsp_doc_border = true, -- add a border to hover docs and signature help
+				},
+			})
+			require("notify").setup({
+				background_colour = "#000000",
+			})
+		end,
+	},
 	-- Rust
-	{ "mrcjkb/rustaceanvim", ft = { "rust" } },
+	{ "mrcjkb/rustaceanvim" },
+
+	-- Work with plebs on overleaf
+	{ "subnut/nvim-ghost.nvim" },
+
+	-- See the math
+	{
+		"vhyrro/luarocks.nvim",
+		priority = 1001, -- this plugin needs to run before anything else
+		opts = {
+			rocks = { "magick", "jsregexp" },
+		},
+	},
+	-- {
+	-- 	"3rd/image.nvim",
+	-- 	config = function()
+	-- 		require("image").setup()
+	-- 	end,
+	-- },
+
+	-- Org mode
+	{
+		"nvim-neorg/neorg",
+		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+		version = "*", -- Pin Neorg to the latest stable release
+		config = function()
+			require("neorg").setup({
+				load = {
+					["core.defaults"] = {},
+					["core.keybinds"] = {
+						config = {
+							default_keybinds = true,
+						},
+					},
+					["core.concealer"] = {},
+					["core.dirman"] = {
+						config = {
+							workspaces = {
+								notes = "~/neorg/notes",
+							},
+						},
+					},
+					["core.completion"] = {
+						config = {
+							engine = "nvim-cmp",
+						},
+					},
+					["core.integrations.nvim-cmp"] = {},
+					-- ["core.integrations.image"] = {},
+					-- ["core.latex.renderer"] = {},
+				},
+			})
+			return true
+		end,
+	},
 
 	-- Obsidian
 	{
 		"epwalsh/obsidian.nvim",
+		version = "*",
+		lazy = true,
+		ft = "markdown",
 		dependencies = {
 			-- Required.
 			"nvim-lua/plenary.nvim",
+			"hrsh7th/nvim-cmp",
+			"nvim-telescope/telescope.nvim",
+			"nvim-treesitter",
 		},
-		config = function()
-			require("obsidian").setup({
-				dir = "~/Documents/Obsidian Vault",
-				-- Optional, completion.
-				mappings = {
-					["gf"] = require("obsidian").util.gf_passthrough(),
+		opts = {
+			disable_frontmatter = true,
+			workspaces = {
+				{
+					name = "work",
+					path = "~/Documents/Obsidian Vault",
 				},
-				ui = {
-					enable = false,
-				},
-				-- Optional, set to true if you don't want obsidian.nvim to manage frontmatter.
-				disable_frontmatter = true,
-			})
-		end,
+			},
+		},
 	},
 }
 

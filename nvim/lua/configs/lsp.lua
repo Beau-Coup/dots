@@ -17,6 +17,7 @@ local lspattach = function(client, bufnr)
 	else
 		vim.keymap.set("n", "gD", vim.lsp.buf.definition, { buffer = bufnr })
 	end
+    vim.lsp.inlay_hint.enable(true, {bufnr=bufnr})
 end
 
 local default_config = {
@@ -51,7 +52,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	callback = function()
 		local opts = {
 			focusable = false,
-			close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+			close_events = { "BufLeave", "CursorMoved", "InsertEnter"},
 			border = "rounded",
 			source = "always",
 			prefix = " ",
@@ -93,12 +94,6 @@ lspconfig.lua_ls.setup({
 		},
 	},
 })
-
-vim.g.rustaceanvim = {
-	server = {
-		on_attach = lspattach,
-	},
-}
 
 require("clangd_extensions").setup({
 	server = default_config,

@@ -137,3 +137,5 @@ vim.keymap.set("n", "<leader>td", gs.toggle_deleted)
 
 -- Text object
 vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+
+vim.keymap.set("n", "<localleader>nn", "<Plug>(neorg.dirman.new-note)", {})
