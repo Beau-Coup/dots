@@ -13,7 +13,7 @@ window:
     x: 18
     y: 18
   decorations: none
-  opacity: 0.6
+  opacity: 0.8
 
 # Font configuration
 font:
