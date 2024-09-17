@@ -9,7 +9,7 @@ local lspattach = function(client, bufnr)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
 	vim.keymap.set({ "n" }, "<leader>K", vim.lsp.buf.signature_help, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
-	vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, { buffer = bufnr })
+	-- vim.keymap.set("n", "<leader>f", vim.lsp.buf.formatting, { buffer = bufnr })
 	vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
 
 	if client.server_capabilities.declarationProvider then
@@ -17,7 +17,7 @@ local lspattach = function(client, bufnr)
 	else
 		vim.keymap.set("n", "gD", vim.lsp.buf.definition, { buffer = bufnr })
 	end
-    vim.lsp.inlay_hint.enable(true, {bufnr=bufnr})
+	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 end
 
 local default_config = {
@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	callback = function()
 		local opts = {
 			focusable = false,
-			close_events = { "BufLeave", "CursorMoved", "InsertEnter"},
+			close_events = { "BufLeave", "CursorMoved", "InsertEnter" },
 			border = "rounded",
 			source = "always",
 			prefix = " ",

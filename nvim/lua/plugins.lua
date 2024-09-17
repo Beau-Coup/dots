@@ -4,7 +4,7 @@ local plugins = {
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	-- "williamboman/mason.nvim",
 	-- "williamboman/mason-lspconfig.nvim",
-	{ "github/copilot.vim", cmd = "Copilot" },
+	-- { "github/copilot.vim", cmd = "Copilot" },
 
 	"jose-elias-alvarez/null-ls.nvim",
 	"jayp0521/mason-null-ls.nvim",
@@ -169,6 +169,12 @@ local plugins = {
 		opts = {
 			rocks = { "magick", "jsregexp" },
 		},
+	},
+
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
 	},
 	-- {
 	-- 	"3rd/image.nvim",

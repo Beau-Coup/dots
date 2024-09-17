@@ -94,6 +94,16 @@ tex.in_text = function()
 	return not tex.in_mathzone()
 end
 
+local add_math = function(delim)
+	return function(args, snip)
+		if tex.in_text() then
+			return delim
+		else
+			return ""
+		end
+	end
+end
+
 -- Magical table shit
 local table_node = function(args)
 	local tabs = {}
@@ -167,7 +177,7 @@ local mat = function(args, snip)
 			table.insert(nodes, r(ins_indx, tostring(j) .. "x" .. tostring(k), i(1)))
 			ins_indx = ins_indx + 1
 		end
-		table.insert(nodes, t({ " \\\\", "" }))
+		table.insert(nodes, t({ " \\\\", "\t" }))
 	end
 	-- fix last node.
 	nodes[#nodes] = t(" \\\\")
@@ -198,7 +208,7 @@ tex.snippets = {
 			name = "multi integrals",
 			dscr = "please work",
 			regTrig = true,
-			hidden = false,
+			hidden = true,
 		},
 		fmt([[ <> <> <> <> ]], {
 			c(1, {
@@ -217,33 +227,50 @@ tex.snippets = {
 			i(0),
 		}, { delimiters = "<>" })
 	),
-	s("tab", {
-		t("\\begin{tabular}{"),
-		i(1),
-		t({ "}", "" }),
-		d(2, table_node, { 1 }, {}),
-		d(3, rec_table, { 1 }),
-		t({ "", "\\end{tabular}" }),
-	}),
-	s({ trig = "ls", show_condition = tex.in_mathzone }, {
+	s(
+		{ trig = "opti", snippetType = "autosnippet" },
+		fmta(
+			[[\begin{aligned}
+    <> <>_{<>} \quad & <> \\ 
+    \text{s.t.} \quad & <> 
+\end{aligned}]],
+			{
+				i(1),
+				c(2, { t([[\min]]), t([[\max]]), t([[\argmin]]), t([[\argmax]]) }),
+				i(3),
+				i(4),
+				i(5),
+			}
+		),
+		{ condition = tex.in_mathzone }
+	),
+	-- s("tab", {
+	-- 	t("\\begin{tabular}{"),
+	-- 	i(1),
+	-- 	t({ "}", "" }),
+	-- 	d(2, table_node, { 1 }, {}),
+	-- 	d(3, rec_table, { 1 }),
+	-- 	t({ "", "\\end{tabular}" }),
+	-- }),
+	s({ trig = "ls", show_condition = tex.in_text }, {
 		t({ "\\begin{itemize}", "\t\\item " }),
 		i(1),
 		d(2, rec_ls, {}),
 		t({ "", "\\end{itemize}" }),
 	}),
-	s({ trig = "boiler", show_condition = tex.in_text }, {
-		t({
-			"\\documentclass[12pt]{article}",
-			"\\usepackage[utf8]{inputenc}",
-			"\\usepackage[margin=1.5in]{geometry}",
-			"\\usepackage{physics}",
-			"\\usepackage{amssymb}",
-			"\\usepackage{amsmath}",
-			"\\begin{document}",
-			"Hello",
-			"\\end{document}",
-		}),
-	}),
+	-- s({ trig = "boiler", show_condition = tex.in_text }, {
+	-- 	t({
+	-- 		"\\documentclass[12pt]{article}",
+	-- 		"\\usepackage[utf8]{inputenc}",
+	-- 		"\\usepackage[margin=1.5in]{geometry}",
+	-- 		"\\usepackage{physics}",
+	-- 		"\\usepackage{amssymb}",
+	-- 		"\\usepackage{amsmath}",
+	-- 		"\\begin{document}",
+	-- 		"Hello",
+	-- 		"\\end{document}",
+	-- 	}),
+	-- }),
 	s({ trig = "beg", show_condition = tex.in_text }, {
 		t({ "\\begin{" }),
 		i(1),
@@ -254,6 +281,19 @@ tex.snippets = {
 		end, { 1 }),
 		i(0),
 	}),
+	s({ trig = "tit", hidden = true }, fmta([[\textit{<>}]], { i(1) }), { condition = tex.in_text }),
+	s({ trig = "tbf", hidden = true }, fmta([[\textbf{<>}]], { i(1) }), { condition = tex.in_text }),
+	s(
+		{ trig = "nin", hidden = true },
+		fmta([[<>n \in \N<>]], {
+			f(function(_, _)
+				return tex.in_mathzone() and "" or "$"
+			end),
+			f(function(_, _)
+				return tex.in_mathzone() and "" or "$"
+			end),
+		})
+	),
 	s(
 		{ trig = "([%\\]?[A-Za-z]+)(%d+)", regTrig = true, name = "auto subscript", hidden = true },
 		fmta([[<><>_{<>}<>]], {
@@ -271,11 +311,24 @@ tex.snippets = {
 			end),
 		})
 	),
-	s({ trig = "uu", wordTrig = false, snippetType = "autosnippet", hidden = true }, fmta([[_{<>}]], { i(1) })),
-	s({ trig = "ii", wordTrig = false, snippetType = "autosnippet", hidden = true }, fmta([[^{<>}]], { i(1) })),
+	s(
+		{ trig = "uu", wordTrig = false, snippetType = "autosnippet", hidden = true },
+		fmta([[_{<>}]], { i(1) }),
+		{ condition = tex.in_mathzone }
+	),
+	s(
+		{ trig = "ii", wordTrig = false, snippetType = "autosnippet", hidden = true },
+		fmta([[^{<>}]], { i(1) }),
+		{ condition = tex.in_mathzone }
+	),
 	s(
 		{ trig = "tp", snippetType = "autosnippet", wordTrig = false },
 		fmta("^{\\mathsf{T}}", {}),
+		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
+	),
+	s(
+		{ trig = "td", snippetType = "autosnippet", wordTrig = false, dscr = "conjugate transpose" },
+		fmta([[^{\dagger}]], {}),
 		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
 	),
 	s(
@@ -326,7 +379,7 @@ tex.snippets = {
 		fmta(
 			[[
     \begin{<>}
-    <>
+        <>
     \end{<>}]],
 			{
 				f(function(_, snip)
@@ -344,9 +397,6 @@ tex.snippets = {
 		i(1),
 		t({ "", "\\]" }),
 		i(0),
-	}),
-	s({ trig = "mmica" }, {
-		fmta([[math <> math]], { i(1) }),
 	}),
 	s(
 		{ trig = "math(.*)math", regTrig = true, dscr = "Evaluate mathematica", hidden = true },
@@ -375,13 +425,15 @@ tex.snippets = {
 		{ trig = "(%b())/", regTrig = true, snippetType = "autosnippet", dscr = "() fraction", hidden = true },
 		fmta([[\frac{<>}{<>}]], { f(function(_, snip)
 			return snip.captures[1]:sub(2, -2)
-		end), i(1) })
+		end), i(1) }),
+		{ condition = tex.in_mathzone }
 	),
 	s(
 		{ trig = "(%S+)/", regTrig = true, snippetType = "autosnippet", dscr = "fraction", hidden = true },
 		fmta([[\frac{<>}{<>}]], { f(function(_, snip)
 			return snip.captures[1]
-		end), i(1) })
+		end), i(1) }),
+		{ condition = tex.in_mathzone }
 	),
 	s(
 		{ trig = "align", snippetType = "autosnippet", hidden = false },
@@ -399,21 +451,31 @@ tex.snippets = {
 			}
 		)
 	),
+	-- s({ trig = "<C-i>", snippetType = "autosnippet" }, fmta([[\textit{<>}]], { i(1) })),
 	s(
-		{ trig = "alphl", snippetType = "autosnippet", wordTrig = true },
+		{ trig = "apl", snippetType = "autosnippet", wordTrig = true },
 		fmta(
-			[[\begin{list}{(\alph{l2})}{\usecounter{l2}}
-    <> 
-\end{list}]],
+			[[\begin{enumerate}[label=(\alph*)]
+    \item <> 
+\end{enumerate}]],
+			{ i(1) }
+		)
+	),
+	s(
+		{ trig = "arol", snippetType = "autosnippet", wordTrig = true },
+		fmta(
+			[[\begin{enumerate}[label=(\roman*)]
+    \item <> 
+\end{enumerate}]],
 			{ i(1) }
 		)
 	),
 	s(
 		{ trig = "arl", snippetType = "autosnippet", wordTrig = true },
 		fmta(
-			[[\begin{list}{\bf \arabic{l1}}{\usecounter{l1}}
-<> 
-\end{list}]],
+			[[\begin{enumerate}[label={\bf\arabic* }]
+    \item <> 
+\end{enumerate}]],
 			{ i(1) }
 		)
 	),
@@ -429,7 +491,7 @@ tex.snippets = {
 		t("}"),
 		i(0),
 	}),
-	s({ trig = "bb", show_condition = tex.in_mathzone }, {
+	s({ trig = "bb", show_condition = tex.in_mathzone, hidden = true }, {
 		t("\\mathbb{"),
 		i(1),
 		t("}"),
@@ -441,21 +503,36 @@ tex.snippets = {
 			i(1, "\\varphi"),
 			c(2, {
 				i(nil),
-				sn(nil, { t("mathbb{"), i(1), t("}") }),
-				sn(nil, { t("mathcal{"), i(1), t("}") }),
+				sn(nil, { t("\\mathbb{"), i(1), t("}") }),
 			}),
 			c(3, {
 				i(nil),
 				sn(nil, { t("\\mathbb{"), i(1), t("}") }),
-				sn(nil, { t("\\mathcal{"), i(1), t("}") }),
 			}),
 		})
 	),
 	s(
-		{ trig = "ip", show_condition = tex.in_mathzone },
+		{ trig = "ip", snippetType = "autosnippet" },
 		fmt([[\langle {}, {} \rangle]], {
 			i(1, "u"),
 			i(2, "v"),
+		}),
+		{ condition = tex.in_mathzone }
+	),
+	s({ trig = "cd", hidden = true }, fmta([[\cdot]], {}), { condition = tex.in_mathzone }),
+	s({ trig = "vd", hidden = true }, fmta([[\vdot]], {}), { condition = tex.in_mathzone }),
+	s(
+		{ trig = "pd", snippetType = "autosnippet" },
+		fmta([[\pdv{<>}<>]], {
+			i(1),
+			c(2, { fmta([[{<>}]], { i(1) }), i(nil) }),
+		})
+	),
+	s(
+		{ trig = "dv", snippetType = "autosnippet" },
+		fmta([[\dv{<>}<>]], {
+			i(1),
+			c(2, { fmta([[{<>}]], { i(1) }), i(nil) }),
 		})
 	),
 	s(
@@ -464,27 +541,30 @@ tex.snippets = {
 	),
 	s(
 		{
-			trig = [[(\S*)(?:\.,|,\.)]],
+			trig = [[(\$*)(\S+)(?:\.,|,\.)]],
 			trigEngine = "ecma",
 			snippetType = "autosnippet",
 			dscr = "Auto vec",
 			hidden = true,
 		},
-		fmta(
-			[[\vb{<>}]],
+		fmta([[<>\vb{<>}]], {
 			f(function(_, snip)
 				return snip.captures[1]
-			end)
-		)
+			end),
+			f(function(_, snip)
+				return snip.captures[2]
+			end),
+		})
 	),
 	s(
 		{ trig = "(%u)%1", snippetType = "autosnippet", regTrig = true, hidden = true },
-		fmta(
-			[[\mathcal{<>}]],
+		fmta([[<>\mathcal{<>}<>]], {
+			f(add_math("$")),
 			f(function(_, snip)
 				return snip.captures[1]
-			end)
-		)
+			end),
+			f(add_math("$")),
+		})
 	),
 	s(
 		{
@@ -501,7 +581,8 @@ tex.snippets = {
 			f(function(_, snip)
 				return snip.captures[1]
 			end),
-		})
+		}),
+		{ condition = tex.in_mathzone }
 	),
 	-- TODO: Triangle matrix macro where you get to choose upper and lower part
 	-- TODO: Macro for aligned environment that automagically adds the <> &= <> \\
@@ -509,25 +590,66 @@ tex.snippets = {
 
 ls.add_snippets("tex", tex.snippets, { key = "tex-snips" })
 
--- Make all the markdown snippets for admonition
-local ads = {
-	"note",
-	"abstract",
-	"info",
-	"tip",
-	"success",
-	"question",
-	"warning",
-	"failure",
-	"danger",
-	"bug",
-	"example",
-	"quote",
+-- Make all the environment / proof / theorems
+local envs = {
 	"definition",
-	"theorem",
+	"eg",
+	"notation",
+	"previouslyseen",
+	"remark",
+	"note",
 	"exercise",
-	"proof",
+	"observe",
+	"property",
+	"intuition",
+	"prop",
+	"theorem",
+	"corollary",
+	"lemma",
 }
+
+local env_snips = {}
+for _, k in ipairs(envs) do
+	table.insert(
+		env_snips,
+		s(
+			{
+				trig = k,
+				dscr = "Start a " .. k .. "environment",
+				docstring = { "\\begin{" .. k .. "}[<title>]", "...", "\\end{" .. k .. "}" },
+				hidden = true,
+			},
+			fmta("\\begin{" .. k .. "}[<>]" .. "\n\t<>" .. "\n\\end{" .. k .. "}", {
+				i(1),
+				i(2),
+			})
+		)
+	)
+end
+
+local greeks = {
+	alp = "\\alpha",
+	eps = "\\epsilon",
+	veps = "\\varepsilon",
+	sig = "\\sigma",
+}
+
+local greek_snips = {}
+for k, v in pairs(greeks) do
+	table.insert(
+		greek_snips,
+		s({
+			trig = k,
+			dscr = "Produce the greek letter " .. v,
+			docstring = { v },
+			hidden = true,
+			snippetType = "autosnippet",
+		}, { t(v) }, { condition = tex.in_mathzone })
+	)
+end
+
+ls.add_snippets("tex", env_snips, { key = "theorem-envs" })
+ls.add_snippets("tex", greek_snips, { key = "greeks" })
 
 local rec_callout
 rec_callout = function()
@@ -544,33 +666,6 @@ rec_callout = function()
 	)
 end
 
-local ad_snips = {}
-for _, k in ipairs(ads) do
-	table.insert(
-		ad_snips,
-		s({
-			trig = k,
-			dscr = "Add a " .. k .. " callout",
-			docstring = { ">[!" .. k .. "] <title> ", "> ... ", "> ^" .. k },
-		}, {
-			t({ ">[!" .. k .. "] " }),
-			i(1, "", { key = "snip-title" }),
-			t({ "", "> " }),
-			i(2),
-			t({ "", "> " }),
-			c(3, {
-				t(""),
-				f(function(args, _, _)
-					return "(" .. k .. ":: " .. args[1][1] .. ") ^" .. k .. "-" .. args[1][1]:lower():gsub("%s+", "-")
-				end, key("snip-title")),
-			}),
-			t({ "", "" }),
-			i(0),
-		})
-	)
-end
-
-ls.add_snippets("markdown", ad_snips, { key = "ad-snips" })
 ls.add_snippets("markdown", tex.snippets, { key = "md-tex-snips" })
 ls.add_snippets("markdown", {
 	s(
