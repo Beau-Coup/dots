@@ -1,0 +1,53 @@
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 12
+
+[font.bold]
+# family = "FiraMono Nerd Font" 
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.glyph_offset]
+y = 0
+
+[font.italic]
+# family = "FiraMono Nerd Font" 
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+# family = "FiraMono Nerd Font" 
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.offset]
+y = 0
+
+[window]
+decorations = "Buttonless"
+opacity = 0.95
+blur = true
+startup_mode = "SimpleFullscreen"
+option_as_alt = "OnlyLeft"
+
+[window.padding]
+x = 18
+y = 18
+
+[[ keyboard.bindings ]]
+mods = "Super"
+key = "A"
+chars = "\u001ba"
+
+[[ keyboard.bindings ]]
+mods = "Shift|Super"
+key = "F"
+action = "ToggleSimpleFullscreen"
+
+[general]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+
+
