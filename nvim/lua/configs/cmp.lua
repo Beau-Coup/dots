@@ -101,9 +101,10 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = "path" },
 		{ name = "gh_issues" },
-		{ name = "obsidian.nvim" },
+		-- { name  = "vimtex"},
+		-- { name = "obsidian.nvim" },
 		{ name = "omni" },
-		{ name = "neorg" },
+		-- { name = "neorg" },
 	}),
 	confirm_opts = {
 		behavior = cmp.ConfirmBehavior.Replace,

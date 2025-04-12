@@ -29,7 +29,7 @@ require("configs.telescope")
 require("configs.hl")
 
 require("configs.keymap")
-require("configs.harpoon")
+-- require("configs.harpoon")
 
 require("configs.hop")
 
@@ -59,7 +59,8 @@ require("configs.treesitter")
 
 -- Formatter
 -- require("configs.formatter")
-require("configs.null-ls")
+-- require("configs.null-ls")
+require("configs.conform")
 
 -- LSP stuff
 require("configs.lsp")
@@ -113,6 +114,6 @@ vim.keymap.set("n", "<leader>gg", ":lua _LG_TOGGLE()<CR>")
 require("configs.dap")
 
 -- Vimtex stuff
-vim.g.vimtex_view_general_viewer = "zathura"
-vim.g.vimtex_view_zathura_options = "-reuse-instance"
+vim.g.vimtex_view_method = "skim"
 vim.g.tex_flavor = "latex"
+vim.g.vimtex_quickfix_open_on_warning = 0
