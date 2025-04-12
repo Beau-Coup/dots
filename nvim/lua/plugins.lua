@@ -1,13 +1,108 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 local plugins = {
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	"nvim-treesitter/nvim-treesitter-textobjects",
-	-- "williamboman/mason.nvim",
-	-- "williamboman/mason-lspconfig.nvim",
-	-- { "github/copilot.vim", cmd = "Copilot" },
+	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", enabled = true },
+	{ "nvim-treesitter/nvim-treesitter-textobjects", enabled = true },
 
-	"jose-elias-alvarez/null-ls.nvim",
-	"jayp0521/mason-null-ls.nvim",
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({})
+		end,
+	},
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		lazy = true,
+		version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+		opts = {
+			-- add any opts here
+			-- for example
+			provider = "copilot",
+			copilot = {
+				endpoint = "https://api.githubcopilot.com",
+				-- model = "claude-3.7-sonnet",
+				-- model = "gpt-4o",
+				-- proxy = nil, -- [protocol://]host[:port] Use this proxy
+				-- allow_insecure = false, -- Allow insecure server connections
+				-- timeout = 30000, -- Timeout in milliseconds
+				-- temperature = 0,
+				-- max_tokens = 8192,
+			},
+			vendors = {
+				copilot_claude = {
+					__inherited_from = "copilot",
+					model = "claude-3.7-sonnet",
+				},
+				copilot_claude_thinking = {
+					__inherited_from = "copilot",
+					model = "claude-3.7-sonnet-thought",
+				},
+				-- Available
+				copilot_o1 = {
+					__inherited_from = "copilot",
+					model = "o1",
+				},
+				-- Available
+				copilot_o3_mini = {
+					__inherited_from = "copilot",
+					model = "o3-mini",
+				},
+				copilot_4o = {
+					__inherited_from = "copilot",
+					model = "gpt-4o",
+				},
+			},
+		},
+		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+		build = "make",
+		-- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"stevearc/dressing.nvim",
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			--- The below dependencies are optional,
+			"echasnovski/mini.pick", -- for file_selector provider mini.pick
+			"nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+			"hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+			"ibhagwan/fzf-lua", -- for file_selector provider fzf
+			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+			"zbirenbaum/copilot.lua", -- for providers='copilot'
+			{
+				-- support for image pasting
+				"HakonHarnes/img-clip.nvim",
+				event = "VeryLazy",
+				opts = {
+					-- recommended settings
+					default = {
+						embed_image_as_base64 = false,
+						prompt_for_file_name = false,
+						drag_and_drop = {
+							insert_mode = true,
+						},
+						-- required for Windows users
+						use_absolute_path = true,
+					},
+				},
+			},
+			{
+				-- Make sure to set this up properly if you have lazy=true
+				"MeanderingProgrammer/render-markdown.nvim",
+				opts = {
+					file_types = { "markdown", "Avante" },
+				},
+				ft = { "markdown", "Avante" },
+			},
+		},
+	},
+
+	-- New formatting
+	{
+		"stevearc/conform.nvim",
+		opts = {},
+	},
 
 	-- Autopairs
 	{
@@ -159,6 +254,18 @@ local plugins = {
 	-- Rust
 	{ "mrcjkb/rustaceanvim" },
 
+	{ "ziglang/zig.vim" },
+
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = "cd app && yarn install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+	},
+
 	-- Work with plebs on overleaf
 	{ "subnut/nvim-ghost.nvim" },
 
@@ -187,6 +294,7 @@ local plugins = {
 	{
 		"nvim-neorg/neorg",
 		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+		enabled = false,
 		version = "*", -- Pin Neorg to the latest stable release
 		config = function()
 			require("neorg").setup({
@@ -218,27 +326,27 @@ local plugins = {
 			return true
 		end,
 	},
-
-	-- Obsidian
 	{
-		"epwalsh/obsidian.nvim",
-		version = "*",
-		lazy = true,
-		ft = "markdown",
-		dependencies = {
-			-- Required.
-			"nvim-lua/plenary.nvim",
-			"hrsh7th/nvim-cmp",
-			"nvim-telescope/telescope.nvim",
-			"nvim-treesitter",
-		},
+		"folke/which-key.nvim",
+		event = "VeryLazy",
 		opts = {
-			disable_frontmatter = true,
-			workspaces = {
-				{
-					name = "work",
-					path = "~/Documents/Obsidian Vault",
-				},
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+			preset = "helix",
+			delay = 500,
+			triggers = {
+				{ "<auto>", mode = "nixsotc" },
+				{ "a", mode = { "n", "v" } },
+			},
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
 	},
