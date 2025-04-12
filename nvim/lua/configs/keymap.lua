@@ -10,6 +10,17 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("i", "jk", "<ESC>")
 vim.keymap.set("v", "jk", "<ESC>")
 
+local keys = "dvo"
+local function switch_map()
+	if keys == "dvo" then
+		vim.o.langmap = ""
+		keys = "qwe"
+	else
+		vim.o.langmap = "dh,hj,tk,nl,jd"
+		keys = "dvo"
+	end
+end
+vim.keymap.set("n", "<leader>lrm", switch_map)
 vim.keymap.set("n", "<leader>fs", ":w<CR>")
 vim.keymap.set("n", "<leader>qs", ":wq<CR>")
 vim.keymap.set("n", "<leader>qq", ":qa<CR>")
@@ -112,30 +123,29 @@ end, { expr = true })
 -- Actions
 -- vim.keymap.set("n", "<leader>hs", gs.stage_hunk)
 -- vim.keymap.set("n", "<leader>hr", gs.reset_hunk)
-vim.keymap.set("v", "<leader>hs", function()
+local gitleader = "<leader>g"
+vim.keymap.set("v", gitleader .. "hs", function()
 	gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-end)
-vim.keymap.set("v", "<leader>hr", function()
+end, { desc = "stage current selection" })
+vim.keymap.set("v", gitleader .. "hr", function()
 	gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-end)
-vim.keymap.set("n", "<leader>hS", gs.stage_buffer)
-vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk)
-vim.keymap.set("n", "<leader>hR", gs.reset_buffer)
-vim.keymap.set("n", "<leader>hp", gs.preview_hunk)
-vim.keymap.set("n", "<leader>gb", function()
-	gs.blame_line()
-end)
-vim.keymap.set("n", "<leader>gB", function()
+end, { desc = "reset selected hunk" })
+vim.keymap.set("n", gitleader .. "hS", gs.stage_buffer, { desc = "stage buffer" })
+vim.keymap.set("n", gitleader .. "hu", gs.undo_stage_hunk, { desc = "undo stage hunk" })
+vim.keymap.set("n", gitleader .. "hR", gs.reset_buffer, { desc = "reset buffer" })
+vim.keymap.set("n", gitleader .. "hp", gs.preview_hunk, { desc = "preview hunk" })
+vim.keymap.set("n", gitleader .. "b", gs.blame_line, { desc = "blame line" })
+vim.keymap.set("n", gitleader .. "B", function()
 	gs.blame_line({ full = true })
-end)
-vim.keymap.set("n", "<leader>tb", gs.toggle_current_line_blame)
-vim.keymap.set("n", "<leader>hd", gs.diffthis)
-vim.keymap.set("n", "<leader>hD", function()
+end, { desc = "blame line full" })
+vim.keymap.set("n", gitleader .. "tb", gs.toggle_current_line_blame, { desc = "toggle current line blame" })
+vim.keymap.set("n", gitleader .. "hd", gs.diffthis, { desc = "diff current file" })
+vim.keymap.set("n", gitleader .. "hD", function()
 	gs.diffthis("~")
-end)
-vim.keymap.set("n", "<leader>td", gs.toggle_deleted)
+end, { desc = "diff directory" })
+vim.keymap.set("n", gitleader .. "td", gs.toggle_deleted, { desc = "toggle deleted" })
 
 -- Text object
-vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "hunk text object" })
 
 vim.keymap.set("n", "<localleader>nn", "<Plug>(neorg.dirman.new-note)", {})

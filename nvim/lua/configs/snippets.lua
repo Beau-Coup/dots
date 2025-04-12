@@ -322,8 +322,18 @@ tex.snippets = {
 		{ condition = tex.in_mathzone }
 	),
 	s(
+		{ trig = "is", wordTrig = false, snippetType = "autosnippet", hidden = true },
+		fmta([[^{*}]], {}),
+		{ condition = tex.in_mathzone }
+	),
+	s(
+		{ trig = "inv", wordTrig = false, snippetType = "autosnippet", hidden = true },
+		fmta([[^{-1}]], {}),
+		{ condition = tex.in_mathzone }
+	),
+	s(
 		{ trig = "tp", snippetType = "autosnippet", wordTrig = false },
-		fmta("^{\\mathsf{T}}", {}),
+		fmta("^{\\transp}", {}),
 		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
 	),
 	s(
@@ -357,8 +367,10 @@ tex.snippets = {
 		{ condition = tex.in_mathzone } -- `condition` option passed in the snippet `opts` table
 	),
 	s({ trig = "nn", snippetType = "autosnippet" }, {
-		t({ "\\begin{equation}", "\t" }),
+		t({ "\\begin{equation}\\label{eq:" }),
 		i(1),
+		t({ "}", "\t" }),
+		i(2),
 		t({ "", "\\end{equation}", "" }),
 		i(0),
 	}),
@@ -370,7 +382,7 @@ tex.snippets = {
 	}),
 	s(
 		{
-			trig = "([bBpvV])(%d+)x(%d+)",
+			trig = "([bBpvV])(%d+)x(%d+)(a?)",
 			regTrig = true,
 			name = "matrix",
 			dscr = "arbitrary matrix gen snippet",
@@ -378,16 +390,25 @@ tex.snippets = {
 		},
 		fmta(
 			[[
-    \begin{<>}
+    <>
         <>
-    \end{<>}]],
+    <>]],
 			{
 				f(function(_, snip)
-					return snip.captures[1] .. "matrix" -- captures matrix type
+					if snip.captures[4] == "a" then
+						local caps = string.rep("c", snip.captures[3])
+						return sn(nil, fmta([[\begin{array}{@{}<><>@{}}]]), { i(1), t(caps) })
+					else
+						return "\\begin{" .. snip.captures[1] .. "matrix}" -- captures matrix type
+					end
 				end),
 				d(1, mat),
 				f(function(_, snip)
-					return snip.captures[1] .. "matrix" -- i think i could probably use a repeat node but whatever
+					if snip.captures[4] == "a" then
+						return "\\end{array}"
+					else
+						return "\\end{" .. snip.captures[1] .. "matrix}" -- captures matrix type
+					end
 				end),
 			}
 		)
@@ -485,12 +506,6 @@ tex.snippets = {
 		t("$"),
 		i(0),
 	}),
-	s({ trig = "v", show_condition = tex.in_mathzone }, {
-		t("\\vb{"),
-		i(1),
-		t("}"),
-		i(0),
-	}),
 	s({ trig = "bb", show_condition = tex.in_mathzone, hidden = true }, {
 		t("\\mathbb{"),
 		i(1),
@@ -512,6 +527,15 @@ tex.snippets = {
 		})
 	),
 	s(
+		{ trig = "lim", snippetType = "autosnippet", hidden = true },
+		fmta([[\lim_{<> \to <>}  <>]], {
+			i(1, "t"),
+			i(2, "\\infty"),
+			i(3, "x(t)"),
+		}),
+		{ condition = tex.in_mathzone }
+	),
+	s(
 		{ trig = "ip", snippetType = "autosnippet" },
 		fmt([[\langle {}, {} \rangle]], {
 			i(1, "u"),
@@ -520,6 +544,7 @@ tex.snippets = {
 		{ condition = tex.in_mathzone }
 	),
 	s({ trig = "cd", hidden = true }, fmta([[\cdot]], {}), { condition = tex.in_mathzone }),
+	s({ trig = "dc", hidden = true }, fmta([[\dotsc]], {}), { condition = tex.in_mathzone }),
 	s({ trig = "vd", hidden = true }, fmta([[\vdot]], {}), { condition = tex.in_mathzone }),
 	s(
 		{ trig = "pd", snippetType = "autosnippet" },
@@ -535,10 +560,10 @@ tex.snippets = {
 			c(2, { fmta([[{<>}]], { i(1) }), i(nil) }),
 		})
 	),
-	s(
-		{ trig = "w", show_condition = tex.in_mathzone, dscr = "Wedge operator", dosctring = "\\wedge" },
-		{ t("\\wedge") }
-	),
+	-- s(
+	-- 	{ trig = "w", show_condition = tex.in_mathzone, dscr = "Wedge operator", dosctring = "\\wedge" },
+	-- 	{ t("\\wedge") }
+	-- ),
 	s(
 		{
 			trig = [[(\$*)(\S+)(?:\.,|,\.)]],
@@ -632,6 +657,9 @@ local greeks = {
 	eps = "\\epsilon",
 	veps = "\\varepsilon",
 	sig = "\\sigma",
+	the = "\\theta",
+	gam = "\\gamma",
+	del = "\\delta",
 }
 
 local greek_snips = {}
@@ -648,8 +676,41 @@ for k, v in pairs(greeks) do
 	)
 end
 
+local delims = {
+	a = { "\\langle", "\\rangle" },
+	A = { "<", ">" },
+	b = { "[", "]" },
+	B = { "\\{", "\\}" },
+	v = { "|", "|" },
+	V = { "\\|", "\\|" },
+	p = { "(", ")" },
+}
+local lr_snips = {}
+
+for k, v in pairs(delims) do
+	table.insert(
+		lr_snips,
+		s(
+			{
+				trig = "lr" .. k,
+				dscr = "Left right paired" .. v[1],
+				-- docstring = { v },
+				hidden = true,
+				snippetType = "autosnippet",
+			},
+			fmta([[\left<> <> \right<>]], {
+				t(v[1]),
+				i(1),
+				t(v[2]),
+			}),
+			{ condition = tex.in_mathzone }
+		)
+	)
+end
+
 ls.add_snippets("tex", env_snips, { key = "theorem-envs" })
 ls.add_snippets("tex", greek_snips, { key = "greeks" })
+ls.add_snippets("tex", lr_snips, { key = "delimiters" })
 
 local rec_callout
 rec_callout = function()

@@ -17,7 +17,7 @@ local lspattach = function(client, bufnr)
 	else
 		vim.keymap.set("n", "gD", vim.lsp.buf.definition, { buffer = bufnr })
 	end
-	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+	vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
 end
 
 local default_config = {
@@ -63,13 +63,14 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 -- setup language servers here
-lspconfig.tsserver.setup(default_config)
+-- lspconfig.ts_ls.setup(default_config)
 lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
 lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
 lspconfig.clangd.setup(default_config)
 lspconfig.tailwindcss.setup(default_config)
 lspconfig.zls.setup(default_config)
+lspconfig.csharp_ls.setup(default_config)
 
 lspconfig.lua_ls.setup({
 	settings = {
@@ -97,4 +98,43 @@ lspconfig.lua_ls.setup({
 
 require("clangd_extensions").setup({
 	server = default_config,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("ziggy", {}),
+	pattern = "ziggy",
+	callback = function()
+		vim.lsp.start({
+			name = "Ziggy LSP",
+			cmd = { "ziggy", "lsp" },
+			root_dir = vim.loop.cwd(),
+			flags = { exit_timeout = 1000 },
+		})
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("ziggy_schema", {}),
+	pattern = "ziggy_schema",
+	callback = function()
+		vim.lsp.start({
+			name = "Ziggy LSP",
+			cmd = { "ziggy", "lsp", "--schema" },
+			root_dir = vim.loop.cwd(),
+			flags = { exit_timeout = 1000 },
+		})
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("superhtml", {}),
+	pattern = "superhtml",
+	callback = function()
+		vim.lsp.start({
+			name = "SuperHTML LSP",
+			cmd = { "superhtml", "lsp" },
+			root_dir = vim.loop.cwd(),
+			flags = { exit_timeout = 1000 },
+		})
+	end,
 })
