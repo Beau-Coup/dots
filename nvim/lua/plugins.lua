@@ -8,7 +8,30 @@ local plugins = {
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
-			require("copilot").setup({})
+			require("copilot").setup({
+				panel = {
+					auto_refresh = true,
+					keymap = {
+						jump_prev = "[[",
+						jump_next = "]]",
+						accept = "<CR>",
+						refresh = "gr",
+						-- open = "<Space>cp",
+					},
+					layout = {
+						position = "right", -- | top | left | right | horizontal | vertical
+						ratio = 0.3,
+					},
+				},
+				suggestion = {
+					keymap = {
+						accept = "<C-l>",
+						next = "<M-]>",
+						prev = "<M-[>",
+						dismiss = "<C-]>",
+					},
+				},
+			})
 		end,
 	},
 	{

@@ -110,10 +110,11 @@ vim.keymap.set("n", "<leader>gg", ":lua _LG_TOGGLE()<CR>")
 -- Mason
 -- require("mason").setup()
 
---dap
-require("configs.dap")
-
 -- Vimtex stuff
 vim.g.vimtex_view_method = "skim"
 vim.g.tex_flavor = "latex"
 vim.g.vimtex_quickfix_open_on_warning = 0
+
+--dap
+require("configs.dap")
+require("configs.copilot")
