@@ -1,0 +1,27 @@
+# Environment
+# env = TERM=xterm-256color
+
+# Font Configuration
+font-family = "JetBrainsMono Nerd Font"
+font-size = 12
+font-style-bold = "Bold"
+font-style-italic = "Italic"
+
+# Window Configuration
+window-decoration = false
+background-opacity = 0.96
+background-blur = 50
+
+maximize = true
+# option-as-alt = "left"
+
+# Window Padding
+window-padding-x = 18
+window-padding-y = 18
+
+# Keyboard Bindings
+keybind = cmd+a=text:\x1ba
+# keybind = shift+super+f=toggle_fullscreen
+
+# Import theme (you may need to create a compatible theme file)
+theme = catppuccin-mocha
