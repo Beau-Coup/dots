@@ -2,17 +2,18 @@
 # env = TERM=xterm-256color
 
 # Font Configuration
-font-family = "JetBrainsMono Nerd Font"
+font-family = "Fira Code"
 font-size = 12
 font-style-bold = "Bold"
 font-style-italic = "Italic"
 
 # Window Configuration
-window-decoration = false
+# window-decoration = false
 background-opacity = 0.96
 background-blur = 50
 
-maximize = true
+# maximize = true
+fullscreen = true
 # option-as-alt = "left"
 
 # Window Padding

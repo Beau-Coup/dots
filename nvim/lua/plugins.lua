@@ -51,12 +51,16 @@ local plugins = {
 				-- allow_insecure = false, -- Allow insecure server connections
 				-- timeout = 30000, -- Timeout in milliseconds
 				-- temperature = 0,
-				-- max_tokens = 8192,
+				max_tokens = 4096,
 			},
 			vendors = {
 				copilot_claude = {
 					__inherited_from = "copilot",
 					model = "claude-3.7-sonnet",
+				},
+				copilot_claude_4 = {
+					__inherited_from = "copilot",
+					model = "claude-sonnet-4",
 				},
 				copilot_claude_thinking = {
 					__inherited_from = "copilot",
@@ -67,10 +71,18 @@ local plugins = {
 					__inherited_from = "copilot",
 					model = "o1",
 				},
+				copilot_o3 = {
+					__inherited_from = "copilot",
+					model = "o3",
+				},
 				-- Available
 				copilot_o3_mini = {
 					__inherited_from = "copilot",
 					model = "o3-mini",
+				},
+				copilot_o4_mini = {
+					__inherited_from = "copilot",
+					model = "o4-mini",
 				},
 				copilot_4o = {
 					__inherited_from = "copilot",
@@ -120,7 +132,12 @@ local plugins = {
 			},
 		},
 	},
-
+	{
+		"m4xshen/hardtime.nvim",
+		lazy = false,
+		dependencies = { "MunifTanjim/nui.nvim" },
+		opts = {},
+	},
 	-- New formatting
 	{
 		"stevearc/conform.nvim",
@@ -289,65 +306,65 @@ local plugins = {
 		ft = { "markdown" },
 	},
 
-	-- Work with plebs on overleaf
-	{ "subnut/nvim-ghost.nvim" },
-
-	-- See the math
-	{
-		"vhyrro/luarocks.nvim",
-		priority = 1001, -- this plugin needs to run before anything else
-		opts = {
-			rocks = { "magick", "jsregexp" },
-		},
-	},
-
 	{
 		"ThePrimeagen/harpoon",
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
 	},
+
 	-- {
 	-- 	"3rd/image.nvim",
-	-- 	config = function()
-	-- 		require("image").setup()
-	-- 	end,
+	-- 	opts = {
+	-- 		processor = "magick_cli",
+	-- 		integrations = {
+	-- 			typst = {
+	-- 				enabled = false,
+	-- 			},
+	-- 		},
+	-- 		tmux_show_only_in_active_window = true,
+	-- 	},
 	-- },
-
+	-- { "edluffy/hologram.nvim" },
+	{
+		"folke/zen-mode.nvim",
+	},
 	-- Org mode
 	{
 		"nvim-neorg/neorg",
 		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-		enabled = false,
-		version = "*", -- Pin Neorg to the latest stable release
-		config = function()
-			require("neorg").setup({
-				load = {
-					["core.defaults"] = {},
-					["core.keybinds"] = {
-						config = {
-							default_keybinds = true,
+		version = "*",
+		opts = {
+			load = {
+				["core.defaults"] = {}, -- Loads default behaviour
+				["core.concealer"] = { config = { icon_preset = "varied" } }, -- Adds pretty icons to your documents
+				["core.dirman"] = { -- Manages Neorg workspaces
+					config = {
+						workspaces = {
+							notes = "~/neorg/notes",
+							reading = "~/neorg/reading",
 						},
+						default_workspace = "notes",
 					},
-					["core.concealer"] = {},
-					["core.dirman"] = {
-						config = {
-							workspaces = {
-								notes = "~/neorg/notes",
-							},
-						},
-					},
-					["core.completion"] = {
-						config = {
-							engine = "nvim-cmp",
-						},
-					},
-					["core.integrations.nvim-cmp"] = {},
-					-- ["core.integrations.image"] = {},
-					-- ["core.latex.renderer"] = {},
 				},
-			})
-			return true
-		end,
+				["core.completion"] = {
+					config = {
+						engine = "nvim-cmp",
+					},
+				},
+				["core.integrations.nvim-cmp"] = {},
+				["core.queries.native"] = {},
+				["core.presenter"] = { config = { zen_mode = "zen-mode" } },
+				["core.ui.calendar"] = {},
+				["core.looking-glass"] = {},
+				["core.summary"] = {},
+				["core.todo-introspector"] = {},
+				-- ["core.integrations.image"] = {},
+				-- ["core.latex.renderer"] = {},
+			},
+		},
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
+		},
 	},
 	{
 		"folke/which-key.nvim",

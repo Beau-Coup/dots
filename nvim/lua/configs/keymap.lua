@@ -148,4 +148,20 @@ vim.keymap.set("n", gitleader .. "td", gs.toggle_deleted, { desc = "toggle delet
 -- Text object
 vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "hunk text object" })
 
+-- Neorg mappings
+vim.keymap.set("n", "<localleader>nw", ":Neorg workspace ", {})
 vim.keymap.set("n", "<localleader>nn", "<Plug>(neorg.dirman.new-note)", {})
+
+vim.keymap.set("n", "<localleader>]", "<Plug>(neorg.presenter.next-page)", { desc = "next slide" })
+vim.keymap.set("n", "<localleader>[", "<Plug>(neorg.presenter.previous-page)", { desc = "previous slide" })
+vim.keymap.set("n", "<localleader>q", "<Plug>(neorg.presenter.close)", { desc = "close slides" })
+vim.keymap.set("n", "<localleader>ps", ":Neorg presenter start<CR>", { desc = "Start presentation" })
+vim.keymap.set(
+	"n",
+	"<localleader>cm",
+	"<Plug>(neorg.looking-glass.magnify-code-block)",
+	{ desc = "magnify code block" }
+)
+
+-- Zen mode
+vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { desc = "Toggle zen mode" })

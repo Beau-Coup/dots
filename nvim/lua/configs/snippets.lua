@@ -19,6 +19,7 @@ local dl = require("luasnip.extras").dynamic_lambda
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local types = require("luasnip.util.types")
+local postfix = require("luasnip.extras.postfix").postfix
 local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 local key = require("luasnip.nodes.key_indexer").new_key
@@ -184,21 +185,60 @@ local mat = function(args, snip)
 	return sn(nil, nodes)
 end
 
+-- dynamic node
+-- generally, postfix comes in the form PRE-CAPTURE-POST, so in this case, arg1 is the "pre" text, arg2 the "post" text
+local dynamic_postfix = function(_, parent, _, user_arg1, user_arg2)
+	local capture = parent.snippet.env.POSTFIX_MATCH
+	if #capture > 0 then
+		return sn(
+			nil,
+			fmta(
+				[[
+        <><><><>
+        ]],
+				{ t(user_arg1), t(capture), t(user_arg2), i(0) }
+			)
+		)
+	else
+		local visual_placeholder = ""
+		if #parent.snippet.env.SELECT_RAW > 0 then
+			visual_placeholder = parent.snippet.env.SELECT_RAW
+		end
+		return sn(
+			nil,
+			fmta(
+				[[
+        <><><><>
+        ]],
+				{ t(user_arg1), i(1, visual_placeholder), t(user_arg2), i(0) }
+			)
+		)
+	end
+end
+
 -- Define suffix modifiers
 -- k: the trigger, v: sub
 local suffs = {
 	hat = "hat",
 	til = "tilde",
-	ba = "overline",
+	bar = "overline",
 	dd = "ddot",
-	["do"] = "dot",
+	["dot"] = "dot",
+	[".,"] = "vb",
+	[",."] = "vb",
 }
 
-local suffixes = {}
-for k, _ in pairs(suffs) do
-	suffixes[#suffixes + 1] = k
+local suffix_snips = {}
+for k, v in pairs(suffs) do
+	table.insert(
+		suffix_snips,
+		postfix(
+			{ trig = k, snippetType = "autosnippet" },
+			{ d(1, dynamic_postfix, {}, { user_args = { "\\" .. v .. "{", "}" } }) },
+			{ condition = tex.in_mathzone, show_condition = tex.in_mathzone }
+		)
+	)
 end
-local suffix_match = table.concat(suffixes, "|")
 
 tex.snippets = {
 	s(
@@ -551,36 +591,21 @@ tex.snippets = {
 		fmta([[\pdv{<>}<>]], {
 			i(1),
 			c(2, { fmta([[{<>}]], { i(1) }), i(nil) }),
-		})
+		}),
+		{ condition = tex.in_mathzone }
 	),
 	s(
 		{ trig = "dv", snippetType = "autosnippet" },
 		fmta([[\dv{<>}<>]], {
 			i(1),
 			c(2, { fmta([[{<>}]], { i(1) }), i(nil) }),
-		})
+		}),
+		{ condition = tex.in_mathzone }
 	),
 	-- s(
 	-- 	{ trig = "w", show_condition = tex.in_mathzone, dscr = "Wedge operator", dosctring = "\\wedge" },
 	-- 	{ t("\\wedge") }
 	-- ),
-	s(
-		{
-			trig = [[(\$*)(\S+)(?:\.,|,\.)]],
-			trigEngine = "ecma",
-			snippetType = "autosnippet",
-			dscr = "Auto vec",
-			hidden = true,
-		},
-		fmta([[<>\vb{<>}]], {
-			f(function(_, snip)
-				return snip.captures[1]
-			end),
-			f(function(_, snip)
-				return snip.captures[2]
-			end),
-		})
-	),
 	s(
 		{ trig = "(%u)%1", snippetType = "autosnippet", regTrig = true, hidden = true },
 		fmta([[<>\mathcal{<>}<>]], {
@@ -590,24 +615,6 @@ tex.snippets = {
 			end),
 			f(add_math("$")),
 		})
-	),
-	s(
-		{
-			trig = [[(\S+)(]] .. suffix_match .. ")", -- TODO: Matches from `suffs` table
-			trigEngine = "ecma",
-			snippetType = "autosnippet",
-			dscr = "Auto suffix",
-			hidden = true,
-		},
-		fmta([[\<>{<>}]], {
-			f(function(_, snip)
-				return suffs[snip.captures[2]]
-			end),
-			f(function(_, snip)
-				return snip.captures[1]
-			end),
-		}),
-		{ condition = tex.in_mathzone }
 	),
 	-- TODO: Triangle matrix macro where you get to choose upper and lower part
 	-- TODO: Macro for aligned environment that automagically adds the <> &= <> \\
@@ -711,6 +718,7 @@ end
 ls.add_snippets("tex", env_snips, { key = "theorem-envs" })
 ls.add_snippets("tex", greek_snips, { key = "greeks" })
 ls.add_snippets("tex", lr_snips, { key = "delimiters" })
+ls.add_snippets("tex", suffix_snips, { key = "postfixes" })
 
 local rec_callout
 rec_callout = function()

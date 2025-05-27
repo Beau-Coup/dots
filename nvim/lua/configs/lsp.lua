@@ -25,17 +25,8 @@ local default_config = {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-
 vim.diagnostic.config({
 	virtual_text = false,
-	signs = true,
 	update_in_insert = false,
 	underline = true,
 	severity_sort = false,
@@ -44,6 +35,24 @@ vim.diagnostic.config({
 		source = "always",
 		header = "",
 		prefix = "",
+	},
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.HINT] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+		},
+		texthl = {
+			[vim.diagnostic.severity.HINT] = "HintMsg",
+			[vim.diagnostic.severity.INFO] = "InfoMsg",
+		},
+		linehl = {
+			[vim.diagnostic.severity.ERROR] = "ErrorMsg",
+		},
+		numhl = {
+			[vim.diagnostic.severity.WARN] = "WarningMsg",
+		},
 	},
 })
 
@@ -71,6 +80,8 @@ lspconfig.clangd.setup(default_config)
 lspconfig.tailwindcss.setup(default_config)
 lspconfig.zls.setup(default_config)
 lspconfig.csharp_ls.setup(default_config)
+lspconfig.html.setup(default_config)
+vim.lsp.enable("ts_ls")
 
 lspconfig.lua_ls.setup({
 	settings = {
