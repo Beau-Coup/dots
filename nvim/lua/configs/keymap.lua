@@ -162,6 +162,16 @@ vim.keymap.set(
 	"<Plug>(neorg.looking-glass.magnify-code-block)",
 	{ desc = "magnify code block" }
 )
+vim.keymap.set("n", "<localleader>q", "<Plug>()", { desc = "close slides" })
 
 -- Zen mode
 vim.keymap.set("n", "<leader>z", ":ZenMode<CR>", { desc = "Toggle zen mode" })
+
+vim.api.nvim_set_keymap("x", "<leader>zz", [[:<C-u>lua CenterVisualSelection()<CR>]], { noremap = true, silent = true })
+function CenterVisualSelection()
+	local start_line = vim.fn.line("'<")
+	local end_line = vim.fn.line("'>")
+	local center_line = math.floor((start_line + end_line) / 2)
+	vim.cmd(tostring(center_line))
+	vim.cmd(":normal! zz<CR>")
+end

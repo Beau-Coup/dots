@@ -43,50 +43,15 @@ local plugins = {
 			-- add any opts here
 			-- for example
 			provider = "copilot",
-			copilot = {
-				endpoint = "https://api.githubcopilot.com",
-				-- model = "claude-3.7-sonnet",
-				-- model = "gpt-4o",
-				-- proxy = nil, -- [protocol://]host[:port] Use this proxy
-				-- allow_insecure = false, -- Allow insecure server connections
-				-- timeout = 30000, -- Timeout in milliseconds
-				-- temperature = 0,
-				max_tokens = 4096,
-			},
-			vendors = {
-				copilot_claude = {
-					__inherited_from = "copilot",
-					model = "claude-3.7-sonnet",
-				},
-				copilot_claude_4 = {
-					__inherited_from = "copilot",
-					model = "claude-sonnet-4",
-				},
-				copilot_claude_thinking = {
-					__inherited_from = "copilot",
-					model = "claude-3.7-sonnet-thought",
-				},
-				-- Available
-				copilot_o1 = {
-					__inherited_from = "copilot",
-					model = "o1",
-				},
-				copilot_o3 = {
-					__inherited_from = "copilot",
-					model = "o3",
-				},
-				-- Available
-				copilot_o3_mini = {
-					__inherited_from = "copilot",
-					model = "o3-mini",
-				},
-				copilot_o4_mini = {
-					__inherited_from = "copilot",
-					model = "o4-mini",
-				},
-				copilot_4o = {
-					__inherited_from = "copilot",
+			providers = {
+				copilot = {
+					endpoint = "https://api.githubcopilot.com",
 					model = "gpt-4o",
+					extra_request_body = {
+						temperature = 0,
+						max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+						reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+					},
 				},
 			},
 		},
@@ -208,21 +173,11 @@ local plugins = {
 	},
 
 	"jremmen/vim-ripgrep",
-
 	--Toggleterm
 	"akinsho/toggleterm.nvim",
 
 	-- Glorious vimtex
 	"lervag/vimtex",
-
-	"preservim/vim-markdown",
-
-	{
-		"aspeddro/pandoc.nvim",
-		config = function()
-			require("pandoc").setup()
-		end,
-	},
 
 	-- Motions
 	"tpope/vim-surround",
@@ -251,6 +206,8 @@ local plugins = {
 			require("gitsigns").setup()
 		end,
 	},
+
+	"preservim/vim-markdown",
 
 	-- lazy.nvim
 	{
@@ -311,60 +268,8 @@ local plugins = {
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
 	},
-
-	-- {
-	-- 	"3rd/image.nvim",
-	-- 	opts = {
-	-- 		processor = "magick_cli",
-	-- 		integrations = {
-	-- 			typst = {
-	-- 				enabled = false,
-	-- 			},
-	-- 		},
-	-- 		tmux_show_only_in_active_window = true,
-	-- 	},
-	-- },
-	-- { "edluffy/hologram.nvim" },
 	{
 		"folke/zen-mode.nvim",
-	},
-	-- Org mode
-	{
-		"nvim-neorg/neorg",
-		lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-		version = "*",
-		opts = {
-			load = {
-				["core.defaults"] = {}, -- Loads default behaviour
-				["core.concealer"] = { config = { icon_preset = "varied" } }, -- Adds pretty icons to your documents
-				["core.dirman"] = { -- Manages Neorg workspaces
-					config = {
-						workspaces = {
-							notes = "~/neorg/notes",
-							reading = "~/neorg/reading",
-						},
-						default_workspace = "notes",
-					},
-				},
-				["core.completion"] = {
-					config = {
-						engine = "nvim-cmp",
-					},
-				},
-				["core.integrations.nvim-cmp"] = {},
-				["core.queries.native"] = {},
-				["core.presenter"] = { config = { zen_mode = "zen-mode" } },
-				["core.ui.calendar"] = {},
-				["core.looking-glass"] = {},
-				["core.summary"] = {},
-				["core.todo-introspector"] = {},
-				-- ["core.integrations.image"] = {},
-				-- ["core.latex.renderer"] = {},
-			},
-		},
-		dependencies = {
-			{ "nvim-lua/plenary.nvim" },
-		},
 	},
 	{
 		"folke/which-key.nvim",
@@ -388,6 +293,81 @@ local plugins = {
 				end,
 				desc = "Buffer Local Keymaps (which-key)",
 			},
+		},
+	},
+
+	{
+		"vhyrro/luarocks.nvim",
+		priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+		opts = {
+			rocks = { "lua-cjson" }, -- specifies a list of rocks to install
+		},
+	},
+
+	-- Obsidian
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*",
+		lazy = true,
+		ft = "markdown",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "vault",
+					path = "~/Documents/Obsidian Vault",
+				},
+			},
+			notes_subdir = "05 - Fleeting",
+			daily_notes = {
+				folder = "06 - Daily",
+				alias_format = "%B %-d, %Y",
+				-- Optional, default tags to add to each new daily note created.
+				default_tags = { "daily" },
+				-- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+				template = "nvim-daily.md",
+			},
+			templates = {
+				folder = "99 - Meta",
+				date_format = "%Y-%m-%d",
+				time_format = "%H:%M",
+				-- A map for custom variables, the key should be the variable and the value a function
+				substitutions = {
+					yesterday = function()
+						return os.date("%Y-%m-%d", os.time() - 86400)
+					end,
+					today = function()
+						return os.date("%Y-%m-%d", os.time())
+					end,
+					tomorrow = function()
+						return os.date("%Y-%m-%d", os.time() + 86400)
+					end,
+					["day-today"] = function()
+						return os.date("%A, %b %e %Y", os.time())
+					end,
+					eow = function()
+						local hand = assert(io.popen([[date "+%Y%m%d" -d Sun]], "r"))
+						local res = assert(hand:read("*a"))
+						hand:close()
+						return res
+					end,
+					quote = function()
+						local json = require("cjson")
+						local hand = assert(io.popen("curl https://zenquotes.io/api/today | jq '.[0]'", "r"))
+						local res = assert(hand:read("*a"))
+						hand:close()
+
+						res = json.decode(res)
+
+						return "> [!quote] " .. res.q .. "\n> -- " .. res.a
+						-- return "> [!quote] Do or do not. There is no try\n> -- Yoda"
+					end,
+				},
+			},
+			ui = { enable = false },
+			disable_frontmatter = true,
 		},
 	},
 }

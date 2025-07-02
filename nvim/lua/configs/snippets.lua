@@ -720,21 +720,9 @@ ls.add_snippets("tex", greek_snips, { key = "greeks" })
 ls.add_snippets("tex", lr_snips, { key = "delimiters" })
 ls.add_snippets("tex", suffix_snips, { key = "postfixes" })
 
-local rec_callout
-rec_callout = function()
-	return sn(
-		nil,
-		c(1, {
-			t(""),
-			sn(nil, {
-				t({ "", "> " }),
-				i(1),
-				d(2, rec_callout, {}),
-			}),
-		})
-	)
-end
-
+ls.add_snippets("markdown", greek_snips, { key = "md-greeks" })
+ls.add_snippets("markdown", lr_snips, { key = "md-delimiters" })
+ls.add_snippets("markdown", suffix_snips, { key = "md-postfixes" })
 ls.add_snippets("markdown", tex.snippets, { key = "md-tex-snips" })
 ls.add_snippets("markdown", {
 	s(
@@ -764,6 +752,49 @@ $$
 		)
 	),
 }, { key = "md-snips" })
+
+-------------------- Python Snippets --------------------
+local function py_init()
+	return sn(
+		nil,
+		c(1, {
+			t(""),
+			i(1),
+		})
+	)
+end
+
+local function init_assign(args)
+	local tab = {}
+	local a = args[1][1]
+	if #a == 0 then
+		table.insert(tab, t({ "", "\tpass" }))
+	else
+		local cnt = 1
+		for e in string.gmatch(a, " ?([^,]*) ?") do
+			if #e > 0 then
+				table.insert(tab, t({ "", "\tself." }))
+				table.insert(tab, t(e))
+				table.insert(tab, t(" = "))
+				table.insert(tab, t(e))
+				cnt = cnt + 1
+			end
+		end
+	end
+	return sn(nil, tab)
+end
+
+local pysnips = {
+	s(
+		"init",
+		fmt([[def __init__(self{}):{}]], {
+			d(1, py_init),
+			d(2, init_assign, { 1 }),
+		})
+	),
+}
+
+ls.add_snippets("python", pysnips, { key = "python snippets" })
 
 vim.api.nvim_set_keymap("i", "<C-j>", "<Plug>luasnip-next-choice", { silent = true })
 vim.api.nvim_set_keymap("i", "<C-k>", "<Plug>luasnip-prev-choice", { silent = true })
