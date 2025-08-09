@@ -17,14 +17,13 @@ vim.opt.rtp:prepend(lazypath)
 require("plugins")
 
 require("catppuccin").setup({
-	flavour = "mocha", -- latte, frappe, macchiato, mocha
-	transparent_background = true, -- disables setting the background color.
+	flavour = "mocha",
+	transparent_background = true,
 })
 vim.cmd.colorscheme("catppuccin")
 
 require("configs.opts")
 require("configs.filetype")
-
 require("configs.telescope")
 require("configs.hl")
 
