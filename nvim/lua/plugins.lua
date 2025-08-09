@@ -120,6 +120,11 @@ local plugins = {
 	-- Color themes
 	{ "catppuccin/nvim", name = "catppuccin" },
 
+	-- {
+	-- 	"Biscuit-Theme/nvim",
+	-- 	as = "biscuit",
+	-- },
+
 	-- LSP
 	"neovim/nvim-lspconfig",
 	"hrsh7th/nvim-cmp",
@@ -155,9 +160,6 @@ local plugins = {
 	-- Icons
 	"kyazdani42/nvim-web-devicons",
 
-	-- Icons
-	use("kyazdani42/nvim-web-devicons")
-
 	-- Tree
 	{
 		"kyazdani42/nvim-tree.lua",
@@ -182,14 +184,14 @@ local plugins = {
 	-- Glorious vimtex
 	"lervag/vimtex",
 
-	use("preservim/vim-markdown")
+	"preservim/vim-markdown",
 
-	use({
+	{
 		"aspeddro/pandoc.nvim",
 		config = function()
 			require("pandoc").setup()
 		end,
-	})
+	},
 
 	-- Motions
 	"tpope/vim-surround",

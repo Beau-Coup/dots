@@ -1,10 +1,10 @@
 #!/bin/sh 
 
-swww init
-swww img "$HOME/git/dots/assets/wave.png"
+# swww init
+# swww img "$HOME/git/dots/assets/wave.png"
 
-eww daemon
-eww open bar
-
+hyprpaper &
 dunst &
+caelestia shell -d &
+
 

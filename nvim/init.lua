@@ -16,6 +16,14 @@ vim.opt.rtp:prepend(lazypath)
 -- Use plugins :)
 require("plugins")
 
+require("catppuccin").setup({
+	flavour = "mocha",
+	transparent_background = true,
+})
+vim.cmd.colorscheme("catppuccin")
+
+require("configs.opts")
+require("configs.filetype")
 require("configs.telescope")
 require("configs.hl")
 

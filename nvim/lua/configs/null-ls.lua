@@ -15,10 +15,6 @@ null_ls.setup({
 		formatting.rustfmt,
 		formatting.clang_format,
 		formatting.zigfmt,
-        formatting.asmfmt,
-        formatting.clang_format.with({
-            extra_args = { "-style={BasedOnStyle: Google, IndentWidth: 4}" }
-        }),
 	},
 	-- configure format on save
 	on_attach = function(current_client, bufnr)

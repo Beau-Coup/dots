@@ -80,14 +80,14 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 -- setup language servers here
--- lspconfig.ts_ls.setup(default_config)
-lspconfig.pyright.setup(default_config)
 lspconfig.lua_ls.setup(default_config)
 lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
 lspconfig.clangd.setup(default_config)
 lspconfig.tailwindcss.setup(default_config)
 lspconfig.asm_lsp.setup(default_config)
 lspconfig.zls.setup(default_config)
+vim.lsp.enable("ty")
+vim.lsp.enable("ts_ls")
 
 lspconfig.lua_ls.setup({
 	settings = {
