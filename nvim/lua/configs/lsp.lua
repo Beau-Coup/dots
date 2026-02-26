@@ -1,5 +1,3 @@
-local lspconfig = require("lspconfig")
-
 local lspattach = function(client, bufnr)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
@@ -71,19 +69,18 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	end,
 })
 
--- setup language servers here
--- lspconfig.ts_ls.setup(default_config)
-lspconfig.pyright.setup(default_config)
-lspconfig.lua_ls.setup(default_config)
-lspconfig.texlab.setup({ default_config, filetypes = { "markdown", "tex" } })
-lspconfig.clangd.setup(default_config)
-lspconfig.tailwindcss.setup(default_config)
-lspconfig.zls.setup(default_config)
-lspconfig.csharp_ls.setup(default_config)
-lspconfig.html.setup(default_config)
+vim.lsp.config("*", default_config)
+vim.lsp.enable("pyright")
+vim.lsp.enable("lua_ls")
+vim.lsp.config("texlab", { filetypes = { "tex", "plaintex", "bib", "markdown" } })
+vim.lsp.enable("clangd")
+vim.lsp.enable("tailwindcss")
+vim.lsp.enable("zls")
+vim.lsp.enable("csharp")
+vim.lsp.enable("html")
 vim.lsp.enable("ts_ls")
 
-lspconfig.lua_ls.setup({
+vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
 			runtime = {
@@ -107,45 +104,13 @@ lspconfig.lua_ls.setup({
 	},
 })
 
-require("clangd_extensions").setup({
-	server = default_config,
-})
+-- require("clangd_extensions").setup({
+-- 	server = default_config,
+-- })
 
-vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("ziggy", {}),
-	pattern = "ziggy",
-	callback = function()
-		vim.lsp.start({
-			name = "Ziggy LSP",
-			cmd = { "ziggy", "lsp" },
-			root_dir = vim.loop.cwd(),
-			flags = { exit_timeout = 1000 },
-		})
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("ziggy_schema", {}),
-	pattern = "ziggy_schema",
-	callback = function()
-		vim.lsp.start({
-			name = "Ziggy LSP",
-			cmd = { "ziggy", "lsp", "--schema" },
-			root_dir = vim.loop.cwd(),
-			flags = { exit_timeout = 1000 },
-		})
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("superhtml", {}),
-	pattern = "superhtml",
-	callback = function()
-		vim.lsp.start({
-			name = "SuperHTML LSP",
-			cmd = { "superhtml", "lsp" },
-			root_dir = vim.loop.cwd(),
-			flags = { exit_timeout = 1000 },
-		})
-	end,
+vim.lsp.config("clangd", {
+	cmd = { "clangd", "--background-index", "--enable-config", "--clang-tidy", "--log=verbose" },
+	init_options = {
+		fallbackFlags = { "-std=c++20" },
+	},
 })

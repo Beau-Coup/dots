@@ -25,4 +25,4 @@ keybind = cmd+a=text:\x1ba
 # keybind = shift+super+f=toggle_fullscreen
 
 # Import theme (you may need to create a compatible theme file)
-theme = catppuccin-mocha
+theme = catppuccin-mocha.conf

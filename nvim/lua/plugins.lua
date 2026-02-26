@@ -2,7 +2,20 @@
 local plugins = {
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", enabled = true },
 	{ "nvim-treesitter/nvim-treesitter-textobjects", enabled = true },
-
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			require("treesitter-context").setup({
+				enable = true,
+				multiline_threshold = 12,
+			})
+		end,
+	},
+	{
+		"mrcjkb/haskell-tools.nvim",
+		version = "^6", -- Recommended
+		lazy = false, -- This plugin is already lazy
+	},
 	{
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
@@ -177,7 +190,7 @@ local plugins = {
 	"akinsho/toggleterm.nvim",
 
 	-- Glorious vimtex
-	"lervag/vimtex",
+	{ "lervag/vimtex", ft = { "tex", "latex", "markdown" } },
 
 	-- Motions
 	"tpope/vim-surround",
@@ -368,6 +381,14 @@ local plugins = {
 			},
 			ui = { enable = false },
 			disable_frontmatter = true,
+		},
+	},
+
+	{
+		"quarto-dev/quarto-nvim",
+		dependencies = {
+			"jmbuhr/otter.nvim",
+			"nvim-treesitter/nvim-treesitter",
 		},
 	},
 }

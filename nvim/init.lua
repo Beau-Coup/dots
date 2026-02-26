@@ -51,6 +51,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 pcall(require("telescope").load_extension, "fzf")
 
+-- SSH remote editing
+pcall(require("telescope").load_extension, "remote-sshfs")
+
 -- Configure treesitter
 require("configs.treesitter")
 
@@ -111,10 +114,11 @@ vim.keymap.set("n", "<leader>gg", ":lua _LG_TOGGLE()<CR>")
 
 -- Vimtex stuff
 vim.g.vimtex_view_method = "skim"
-vim.g.tex_flavor = "latex"
+vim.g.tex_flavor = "lualatex"
 vim.g.vimtex_quickfix_open_on_warning = 0
 vim.g.vimtex_view_skim_sync = 1
 vim.g.vimtex_view_skim_activate = 1
+vim.g.vimtex_compiler_latexmk_engines = { _ = "-lualatex" }
 
 --dap
 require("configs.dap")

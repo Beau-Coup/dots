@@ -105,6 +105,7 @@ require("nvim-treesitter.configs").setup({
 		enable = true,
 		disable = { "latex", "lua" },
 	},
+	match = { enable = true },
 	textobjects = {
 		select = {
 			enable = true,
